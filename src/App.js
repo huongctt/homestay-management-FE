@@ -1,24 +1,34 @@
-import logo from './logo.svg';
-import './App.css';
+import logo from "./logo.svg";
+import "./App.css";
+
+import { Route, BrowserRouter, Routes } from "react-router-dom";
+import Login from "./screens/Login";
+import Home from "./screens/Home";
+import NotFound from "./screens/NotFound/NotFound";
+import CreateHomestay from "./screens/ManageHomestay/CreateHomestay/CreateHomestay";
+import NavTop from "./layout/components/NavTop";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <NavTop />
+      {/* <Routes>
+        <Route index element={<Home />} exact />
+        <Route path="/login" element={<Login />} />
+        <Route path="homestays" element={<Home />}>
+          <Route path="create" element={<CreateHomestay />} />
+        </Route>
+        <Route path="*" element={<NotFound />} />
+      </Routes> */}
+      <Routes>
+        <Route index element={<Home />} />
+        <Route path="login" element={<Login />} />
+        <Route path="home" element={<Home />} />
+        <Route path="homestays" element={<Home />} />
+        <Route path="homestays/create" element={<CreateHomestay />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </>
   );
 }
 
