@@ -34,7 +34,6 @@ const HomestayForm = () => {
       pool: poolInput.current.value,
       description: descriptionInput.current.value,
     };
-    console.log({ a: files.length });
     // let tmp = `{ "name": "${data.name}", "address": "${data.address}", "city": "${data.city}", "price": "${data.price}", "people": "${data.people}", "pool": "${data.pool}", "description": "${data.description}" }`;
     // let params = JSON.parse(tmp);
     const response = await createHomestay(data);

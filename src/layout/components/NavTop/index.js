@@ -9,11 +9,6 @@ import { getCookie } from "../../../constant/request";
 import useAuthen from "../../../hooks/useAuthen";
 
 const NavTop = () => {
-  // const [isAuth, setIsAuth] = useState(false);
-  // const currentUser = getCookie();
-  // if (currentUser) {
-  //   setIsAuth(true);
-  // }
   const { isAuthenticated } = useAuthen();
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-hb sticky-top">
@@ -38,6 +33,11 @@ const NavTop = () => {
           <li className="nav-item mr-3">
             <NavLink to="/homestays/create" className="nav-link ">
               Create Homestay
+            </NavLink>
+          </li>
+          <li className="nav-item mr-3">
+            <NavLink to="/homestays" className="nav-link ">
+              Homestay Listings
             </NavLink>
           </li>
         </ul>

@@ -1,7 +1,6 @@
 import { getAsyncWithToken, postAsync } from "../constant/request";
 
 function getCookie(name = "currentuser") {
-  console.log("get cookie");
   const v = document.cookie.match("(^|;) ?" + name + "=([^;]*)(;|$)");
   return v ? v[2] : null;
 }

@@ -14,7 +14,6 @@ const useAuthen = () => {
     getUserInfo()
       .then((res) => {
         if (Object.keys(res).length !== 0 && res.constructor === Object) {
-          console.log({ res });
           setIsAuthenticated(true);
           setUsername(res?.username);
           if (res.role === "homestay owner") {

@@ -1,6 +1,10 @@
 .btn-secondary {
   color: #fff !important; }
 
+.bg-hb {
+  background-color: rgb(147, 149, 240)
+}
+
 img {
   width: 100%; }
 

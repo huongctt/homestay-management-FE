@@ -40,7 +40,6 @@ export const LoginContextProvider = ({ children }) => {
   };
 
   const handleLogin = async (username, password) => {
-    console.log({ username });
     let tmp = `{ "username": "${username}", "password": "${password}" }`;
     let params = JSON.parse(tmp);
     if (username && password) {
@@ -50,7 +49,6 @@ export const LoginContextProvider = ({ children }) => {
         await setCookie("currentuser", response?.token);
         await setCookie("userid", response?.user._id);
         await setCookie("role", response.user.role);
-        console.log({ cookies });
 
         navigate("/home");
       } else toastError(response?.error);
