@@ -9,7 +9,9 @@ import CreateHomestay from "./screens/ManageHomestay/CreateHomestay/CreateHomest
 import HomestayPage from "./screens/ManageHomestay/HomestayPage";
 import NavTop from "./layout/components/NavTop";
 import HomestayListings from "./screens/ManageHomestay/HomestayListings";
+import EditService from "./screens/ManageService/EditService";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
+import EditHomestay from "./screens/ManageHomestay/EditHomestay";
 
 const queryClient = new QueryClient();
 function App() {
@@ -32,6 +34,8 @@ function App() {
           <Route path="homestays" element={<HomestayListings />} />
           <Route path="homestays/create" element={<CreateHomestay />} />
           <Route path="homestays/:id" element={<HomestayPage />} />
+          <Route path="homestays/:id/edit" element={<EditHomestay />} />
+          <Route path="services/:id/edit" element={<EditService />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </QueryClientProvider>

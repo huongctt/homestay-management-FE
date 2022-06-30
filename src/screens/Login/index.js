@@ -3,6 +3,7 @@ import "../../assets/css/style.css";
 import "../../assets/css/bootstrap.css";
 import "../../assets/css/chart.css";
 import "../../assets/css/lightbox.min.css";
+import classes from "./style.module.css";
 
 import React, { useState } from "react";
 import { Facebook, Globe, Linkedin, Lock, Twitter, User } from "react-feather";
@@ -17,169 +18,167 @@ const LoginImpl = () => {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [role, setRole] = useState("visitor");
+  const [signInWanted, setSignInWanted] = useState(true);
+  console.log(signInWanted);
 
   return (
-    <div className="container1">
-      <div className="forms-container">
-        <div className="signin-signup">
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              handleLogin(username, password);
-            }}
-            className="sign-in-form"
-          >
-            <h2 className="title">Sign in</h2>
-            <div className="input-field">
-              <User style={{ placeSelf: "center" }} />
+    <div className={classes["container1"]}>
+      <div className={classes["forms-container"]}>
+        <div className={classes["signin-signup"]}>
+          {signInWanted ? (
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleLogin(username, password);
+              }}
+              className={classes["sign-in-form"]}
+              style={{ alignItems: "center" }}
+            >
+              <h2 className={classes["title"]}>Sign in</h2>
+              <div className={classes["input-field"]}>
+                <User style={{ placeSelf: "center" }} />
+                <input
+                  type="text"
+                  placeholder="Username"
+                  onChange={(e) => setUsername(e.target.value)}
+                  value={username}
+                />
+              </div>
+              <div className={classes["input-field"]}>
+                <Lock style={{ placeSelf: "center" }} />
+                <input
+                  type="password"
+                  placeholder="Password"
+                  onChange={(e) => setPassword(e.target.value)}
+                  value={password}
+                />
+              </div>
               <input
-                type="text"
-                placeholder="Username"
-                onChange={(e) => setUsername(e.target.value)}
-                value={username}
+                type="submit"
+                value="Login"
+                className={`${classes["btn"]} solid`}
               />
-            </div>
-            <div className="input-field">
-              <Lock style={{ placeSelf: "center" }} />
-              <input
-                type="password"
-                placeholder="Password"
-                onChange={(e) => setPassword(e.target.value)}
-                value={password}
-              />
-            </div>
-            <input type="submit" value="Login" className="btn solid" />
-            <p className="social-text">Or Sign in with social platforms</p>
-            <div className="social-media">
-              <a href="#" className="social-icon">
-                <Facebook />
-              </a>
-              <a href="#" className="social-icon">
-                <Twitter />
-              </a>
-              <a href="#" className="social-icon">
-                <Globe />
-              </a>
-              <a href="#" className="social-icon">
-                <Linkedin />
-              </a>
-            </div>
-          </form>
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              handleSignup(username, password, phone, email, role);
-            }}
-            className="sign-up-form"
-          >
-            <h2 className="title">Sign up</h2>
-            <div className="input-field">
-              <i className="fas fa-user"></i>
-              <input
-                type="text"
-                placeholder="Username"
-                onChange={(e) => setUsername(e.target.value)}
-                value={username}
-              />
-            </div>
-            <div className="input-field">
-              <i className="fas fa-envelope"></i>
-              <input
-                type="email"
-                placeholder="Email"
-                onChange={(e) => setEmail(e.target.value)}
-                value={email}
-              />
-            </div>
-            <div className="input-field">
-              <i className="fas fa-lock"></i>
-              <input
-                type="password"
-                placeholder="Password"
-                onChange={(e) => setPassword(e.target.value)}
-                value={password}
-              />
-            </div>
-            <div className="input-field">
-              <i className="fas fa-phone"></i>
-              <input
-                type="text"
-                placeholder="Phone"
-                onChange={(e) => setPhone(e.target.value)}
-                value={phone}
-              />
-            </div>
-            <div className="form-check">
-              <input
-                className="form-check-input"
-                type="radio"
-                checked={role === "homestay owner"}
-                onChange={(e) => setRole("homestay owner")}
-              />
-              <label className="form-check-label" for="flexRadioDefault1">
-                Homestay Owner
-              </label>
-            </div>
-            <div className="form-check">
-              <input
-                className="form-check-input"
-                type="radio"
-                checked={role === "visitor"}
-                onChange={(e) => setRole("visitor")}
-              />
-              <label className="form-check-label" for="flexRadioDefault2">
-                Visitor
-              </label>
-            </div>
-            <input type="submit" className="btn" value="Sign up" />
-          </form>
+            </form>
+          ) : (
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleSignup(username, password, phone, email, role);
+              }}
+              className={classes["sign-up-form"]}
+              style={{ alignItems: "center" }}
+            >
+              <h2 className={classes["title"]}>Sign up</h2>
+              <div className={classes["input-field"]}>
+                <i className="fas fa-user"></i>
+                <input
+                  type="text"
+                  placeholder="Username"
+                  onChange={(e) => setUsername(e.target.value)}
+                  value={username}
+                />
+              </div>
+              <div className={classes["input-field"]}>
+                <i className="fas fa-envelope"></i>
+                <input
+                  type="email"
+                  placeholder="Email"
+                  onChange={(e) => setEmail(e.target.value)}
+                  value={email}
+                />
+              </div>
+              <div className={classes["input-field"]}>
+                <i className="fas fa-lock"></i>
+                <input
+                  type="password"
+                  placeholder="Password"
+                  onChange={(e) => setPassword(e.target.value)}
+                  value={password}
+                />
+              </div>
+              <div className={classes["input-field"]}>
+                <i className="fas fa-phone"></i>
+                <input
+                  type="text"
+                  placeholder="Phone"
+                  onChange={(e) => setPhone(e.target.value)}
+                  value={phone}
+                />
+              </div>
+              <div className="form-check">
+                <input
+                  className="form-check-input"
+                  type="radio"
+                  checked={role === "homestay owner"}
+                  onChange={(e) => setRole("homestay owner")}
+                />
+                <label className="form-check-label" for="flexRadioDefault1">
+                  Homestay Owner
+                </label>
+              </div>
+              <div className="form-check">
+                <input
+                  className="form-check-input"
+                  type="radio"
+                  checked={role === "visitor"}
+                  onChange={(e) => setRole("visitor")}
+                />
+                <label className="form-check-label" for="flexRadioDefault2">
+                  Visitor
+                </label>
+              </div>
+              <input type="submit" className={classes["btn"]} value="Sign up" />
+            </form>
+          )}
         </div>
       </div>
 
-      <div className="panels-container">
-        <div className="panel left-panel">
-          <div className="content">
-            <h3>New here ?</h3>
-            <p>
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Debitis,
-              ex ratione. Aliquid!
-            </p>
-            <button
-              className="btn transparent"
-              id="sign-up-btn"
-              onClick={() =>
-                document
-                  .querySelector(".container1")
-                  .classList.add("sign-up-mode")
-              }
-            >
-              Sign up
-            </button>
+      <div className={classes["panels-container"]}>
+        {signInWanted ? (
+          <div className={`${classes["panel"]} ${classes["left-panel"]}`}>
+            <div className={classes["content"]}>
+              <h3>New here ?</h3>
+              <p>Sign iupLumi homestay to start booking!</p>
+              <button
+                className={`${classes["btn"]} ${classes["transparent"]}`}
+                id="sign-up-btn"
+                onClick={(e) => setSignInWanted(false)}
+              >
+                Sign up
+              </button>
+            </div>
+            <img src="img/log.svg" className="image" alt="" />
           </div>
-          <img src="img/log.svg" className="image" alt="" />
-        </div>
-        <div className="panel right-panel">
-          <div className="content">
-            <h3>One of us ?</h3>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum
-              laboriosam ad deleniti.
-            </p>
-            <button
-              className="btn transparent"
-              id="sign-in-btn"
-              onClick={() =>
-                document
-                  .querySelector(".container")
-                  .classList.remove("sign-up-mode")
-              }
-            >
-              Sign in
-            </button>
+        ) : (
+          <div className={`${classes["panel"]} ${classes["left-panel"]}`}>
+            <div className={classes["content"]}>
+              <h3>One of us ?</h3>
+              <p>Sign in Lumi homestay to start booking!</p>
+              <button
+                className={`${classes["btn"]} ${classes["transparent"]}`}
+                id="sign-up-btn"
+                onClick={(e) => setSignInWanted(true)}
+              >
+                Sign in
+              </button>
+            </div>
+            <img src="img/log.svg" className="image" alt="" />
           </div>
-        </div>
+          // <div className={`${classes["panel"]} ${classes["left-panel"]}`}>
+          //   <div className={classes["content"]}>
+          //     <h3>One of us ?</h3>
+          //     <p>Sign in Lumi homestay!</p>
+          //     <button
+          //       className={`${classes["btn"]} ${classes["transparent"]}`}
+          //       id="sign-in-btn"
+          //       onClick={(e) => setSignInWanted(true)}
+          //     >
+          //       Sign in
+          //     </button>
+          //   </div>
+          // </div>
+        )}
       </div>
-      <script src="event.js"></script>
     </div>
   );
 };

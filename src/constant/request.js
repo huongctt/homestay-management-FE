@@ -8,12 +8,11 @@ export function getCookie(name = "currentuser") {
 
 export async function getAsync(url, param = {}, language = "vi") {
   try {
-    const response = await Axios.get(url, {
+    const response = await Axios.get(url, param, {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
-      params: param,
     });
 
     return response;
@@ -162,20 +161,16 @@ export async function deleteAsyncWithToken(url) {
   }
 }
 
-export async function putAsyncWithToken(url, param) {
+export async function putAsyncWithToken(url, data) {
   try {
-    const response = await axios.put(
-      url,
-      { params: param },
-      {
-        headers: {
-          Authorization: "Bearer " + getCookie(),
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          "Cache-Control": "no-cache",
-        },
-      }
-    );
+    const response = await axios.put(url, data, {
+      headers: {
+        Authorization: "Bearer " + getCookie(),
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "Cache-Control": "no-cache",
+      },
+    });
 
     return response;
   } catch (ex) {

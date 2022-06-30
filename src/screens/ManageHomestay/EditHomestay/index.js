@@ -1,19 +1,11 @@
-import "../../../assets/css/all.css";
-import "../../../assets/css/bootstrap.css";
-import "../../../assets/css/style.css";
-import { useRef, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import { createHomestay } from "../../../services/homestayManagementService";
-import { multipleFilesUpload } from "../../../constant/request";
-const HomestayForm = () => {
-  // const [name, setName] = useState("");
-  // const [address, setAddress] = useState("");
-  // const [city, setCity] = useState("Ha Noi");
-  // const [price, setPrice] = useState("");
-  // const [people, setPeople] = useState("");
-  // const [pool, setPool] = useState(false);
-  // const [description, setDescription] = useState("");
+import { useNavigate, useParams, Link } from "react-router-dom";
+import {
+  editHomestay,
+  getHomestay,
+} from "../../../services/homestayManagementService";
+const EditHomestay = () => {
   const [files, setFiles] = useState(null);
   const nameInput = useRef();
   const addressInput = useRef();
@@ -23,7 +15,26 @@ const HomestayForm = () => {
   const poolInput = useRef();
   const descriptionInput = useRef();
 
-  const handleCreate = async (event) => {
+  let { id } = useParams();
+  const navigate = useNavigate();
+  const linkHomestay = `/homestays/${id}`;
+
+  useEffect(() => {
+    async function getData() {
+      const response = await getHomestay(id);
+      if (response.data.homestay) {
+        nameInput.current.value = response.data.homestay.name;
+        addressInput.current.value = response.data.homestay.address;
+        cityInput.current.value = response.data.homestay.city;
+        priceInput.current.value = response.data.homestay.price;
+        peopleInput.current.value = response.data.homestay.people;
+        descriptionInput.current.value = response.data.homestay.description;
+      }
+    }
+    getData();
+  }, []);
+
+  const handleEdit = async (event) => {
     event.preventDefault();
     const data = {
       name: nameInput.current.value,
@@ -34,26 +45,13 @@ const HomestayForm = () => {
       pool: poolInput.current.value,
       description: descriptionInput.current.value,
     };
-    // let tmp = `{ "name": "${data.name}", "address": "${data.address}", "city": "${data.city}", "price": "${data.price}", "people": "${data.people}", "pool": "${data.pool}", "description": "${data.description}" }`;
-    // let params = JSON.parse(tmp);
-    const response = await createHomestay(data);
+    const response = await editHomestay(id, data);
     if (response.status >= 400 || !response) {
-      toast.error("Something went wrong! </br>Cannot create homestay");
+      toast.error("Something went wrong! Cannot update homestay");
       return;
     }
-    const id = response.data._id;
-    const formData = new FormData();
-    for (let i = 0; i < files.length; i++) {
-      formData.append("files", files[i]);
-    }
-    const url = process.env.REACT_APP_BACK_END + "/homestays/" + id;
-    const responseUpload = await multipleFilesUpload(url, formData);
-    // if (responseUpload.status >= 400 || !responseUpload) {
-    //   toast.error("Something went wrong! </br>Cannot create homestay");
-    //   return;
-    // }
-    if (responseUpload?.status === 201) {
-      toast.success("Create homestay successfully!");
+    if (response.status === 200) {
+      toast.success("Update homestay successfully");
     }
   };
 
@@ -63,15 +61,15 @@ const HomestayForm = () => {
       <div className="container">
         <div className="row">
           <div className="col-md-6 mx-auto">
-            <div className="card">
+            <div className="card mt-6" style={{ marginTop: "30px" }}>
               <div
                 className="card-header bg-hb text-light"
                 style={{ backgroundColor: "rgb(147, 149, 240)" }}
               >
-                <h4> New homestay</h4>
+                <h4> Edit homestay</h4>
               </div>
               <div className="card-body">
-                <form onSubmit={handleCreate} enctype="multipart/form-data">
+                <form onSubmit={handleEdit} enctype="multipart/form-data">
                   <div className="form-group">
                     <label for="name">Name</label>
                     <input
@@ -98,7 +96,7 @@ const HomestayForm = () => {
                     <label for="city">City</label>
                     <select
                       name="city"
-                      class="form-control"
+                      className="form-control"
                       id="type"
                       style={{ borderRadius: "15px" }}
                       ref={cityInput}
@@ -116,7 +114,7 @@ const HomestayForm = () => {
                       style={{ borderRadius: "15px" }}
                       type="text"
                       name="price"
-                      class="form-control"
+                      className="form-control"
                       ref={priceInput}
                       required
                     />
@@ -127,7 +125,7 @@ const HomestayForm = () => {
                       style={{ borderRadius: "15px" }}
                       type="number"
                       name="people"
-                      class="form-control"
+                      className="form-control"
                       ref={peopleInput}
                       required
                     />
@@ -136,7 +134,7 @@ const HomestayForm = () => {
                     <label for="pool">Pool</label>
                     <select
                       name="pool"
-                      class="form-control"
+                      className="form-control"
                       id="type"
                       style={{ borderRadius: "15px" }}
                       ref={poolInput}
@@ -152,7 +150,7 @@ const HomestayForm = () => {
                       rows="5"
                       type="description"
                       name="description"
-                      class="form-control"
+                      className="form-control"
                       ref={descriptionInput}
                       required
                     ></textarea>
@@ -166,10 +164,17 @@ const HomestayForm = () => {
 
                   <input
                     type="submit"
-                    value="Create"
-                    className="btn btn-secondary btn-block mt-4"
+                    value="Update"
+                    className="btn btn-secondary btn-block mt-4 mb-6"
                   />
                 </form>
+                <Link
+                  to={linkHomestay}
+                  className="mt-6 text-center"
+                  style={{ marginTop: "50px" }}
+                >
+                  Go back to homestay
+                </Link>
               </div>
             </div>
           </div>
@@ -178,4 +183,4 @@ const HomestayForm = () => {
     </>
   );
 };
-export default HomestayForm;
+export default EditHomestay;

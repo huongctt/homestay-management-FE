@@ -14,7 +14,6 @@ const HomestayListings = () => {
     }
     getData();
   }, []);
-  console.log(homestays);
   // const { data, isFetching, isLoading, error, isError } = useQuery(
   //   "getListHomestays",
   //   getListHomestay(userid)
@@ -46,7 +45,9 @@ const HomestayListings = () => {
   return (
     <>
       <div className="container">
-        <h1 className="text-center mb-6"> Homestay listings</h1>
+        <h1 className="text-center mb-6" style={{ margin: "15px" }}>
+          Homestay listings
+        </h1>
         <div className="row">{list}</div>
       </div>
     </>

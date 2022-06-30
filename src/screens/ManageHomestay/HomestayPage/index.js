@@ -1,33 +1,70 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
+import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { getHomestay } from "../../../services/homestayManagementService";
-import { createService } from "../../../services/serviceManagement";
+import {
+  createService,
+  getServicesByHomestay,
+} from "../../../services/serviceManagement";
 import Modal from "../../../layout/components/Modal";
 import classes from "./style.module.css";
+import { Slide } from "react-slideshow-image";
+import "react-slideshow-image/dist/styles.css";
+import ServiceCard from "./ServiceCard";
+import useAuthen from "../../../hooks/useAuthen";
 
 const HomestayPage = (props) => {
   let { id } = useParams();
+  const { username } = useAuthen();
+  const editLink = `/homestays/${id}/edit`;
+
   const [homestay, setHomestay] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [owner, setOwner] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [images, setImages] = useState([]);
+  const [services, setServices] = useState([]);
+
   const serviceName = useRef();
   const servicePrice = useRef();
   const serviceDescription = useRef();
+
   useEffect(() => {
     async function getData() {
       const response = await getHomestay(id);
       if (response.data.homestay) {
         setHomestay(response.data?.homestay);
         setOwner(response.data?.owner);
+        const arr = [];
+        for (let i = 0; i < response.data.homestay.images.length; i++) {
+          arr.push(`http://localhost:3333/homestays/${id}/images?index=${i}`);
+        }
+        setImages(arr);
         setIsLoading(false);
+      }
+      const servicesResponse = await getServicesByHomestay(id);
+      if (servicesResponse.data.services) {
+        setServices(servicesResponse.data.services);
+        console.log({ services });
       }
     }
     getData();
   }, []);
-  console.log({ homestay });
-  console.log(isLoading);
+  //list services
+  const serviceList = services.map((service) => {
+    return (
+      <ServiceCard
+        key={service._id}
+        id={service._id}
+        name={service.name}
+        description={service.description}
+        price={service.price}
+        isOwner={owner.username === username}
+        className="mt-6"
+      />
+    );
+  });
   //modal
   const showModalHandler = () => {
     setShowModal(true);
@@ -51,6 +88,8 @@ const HomestayPage = (props) => {
       return;
     }
   };
+
+  //loading
   if (!isLoading && !homestay) {
     return (
       <>
@@ -68,144 +107,102 @@ const HomestayPage = (props) => {
   }
   return (
     <>
-      <h3 className="text-center mt-6">{homestay.name}</h3>
+      <h3 className="text-center mt-6" style={{ marginTop: "20px" }}>
+        {homestay.name}
+      </h3>
       <section id="listing" class="py-4">
-        <div class="container">
-          <div class="row">
-            <div class="col-md-9">
-              <img
-                src="../../../assets/img/homes/home-1.jpg"
-                alt=""
-                class="img-main img-fluid mb-3"
-              />
-              <div class="row mb-5 thumbs">
-                <div class="col-md-2">
-                  <a
-                    href="../../../assets/img/homes/home-1.jpg"
-                    data-lightbox="home-images"
-                  >
-                    <img
-                      src="../../../assets/img/homes/home-1.jpg"
-                      alt=""
-                      class="img-fluid"
-                    />
-                  </a>
-                </div>
-                <div class="col-md-2">
-                  <a
-                    src="../../../assets/img/homes/home-1.jpg"
-                    data-lightbox="home-images"
-                  >
-                    <img
-                      src="../../../assets/img/homes/home-1.jpg"
-                      alt=""
-                      class="img-fluid"
-                    />
-                  </a>
-                </div>
-                <div class="col-md-2">
-                  <a
-                    href="../../../assets/img/homes/home-1.jpg"
-                    data-lightbox="home-images"
-                  >
-                    <img
-                      src="../../../assets/img/homes/home-1.jpg"
-                      alt=""
-                      class="img-fluid"
-                    />
-                  </a>
-                </div>
-                <div class="col-md-2">
-                  <a
-                    href="../../../assets/img/homes/home-1.jpg"
-                    data-lightbox="home-images"
-                  >
-                    <img
-                      src="../../../assets/img/homes/home-1.jpg"
-                      alt=""
-                      class="img-fluid"
-                    />
-                  </a>
-                </div>
-                <div class="col-md-2">
-                  <a
-                    href="../../../assets/img/homes/home-1.jpg"
-                    data-lightbox="home-images"
-                  >
-                    <img
-                      src="../../../assets/img/homes/home-1.jpg"
-                      alt=""
-                      class="img-fluid"
-                    />
-                  </a>
-                </div>
-                <div class="col-md-2">
-                  <a
-                    href="../../../assets/img/homes/home-1.jpg"
-                    data-lightbox="home-images"
-                  >
-                    <img
-                      src="../../../assets/img/homes/home-1.jpg"
-                      alt=""
-                      class="img-fluid"
-                    />
-                  </a>
-                </div>
+        <div className="container">
+          <div className="row">
+            <div className="col-md-9">
+              <div className="slide-container container">
+                <Slide>
+                  {images.map((slideImage, index) => (
+                    <div
+                      className="each-slide img-main img-fluid mb-3"
+                      key={index}
+                    >
+                      <img
+                        src={slideImage}
+                        width="100%"
+                        key={index}
+                        className="center"
+                      />
+                    </div>
+                  ))}
+                </Slide>
               </div>
 
-              <div class="row mb-5 fields">
-                <div class="col-md-6">
-                  <ul class="list-group list-group-flush">
-                    <li class="list-group-item text-secondary">
-                      <i class="fas fa-money-bill-alt"></i> Price:
-                      <span class="float-right">{homestay.price}</span>
+              <div className="row mb-5 fields">
+                <div className="col-md-6">
+                  <ul className="list-group list-group-flush">
+                    <li className="list-group-item text-secondary">
+                      <i className="fas fa-money-bill-alt"></i> Price:
+                      <span className="float-right">{homestay.price}</span>
                     </li>
-                    <li class="list-group-item text-secondary">
-                      <i class="fas fa-bed"></i> People
-                      <span class="float-right">{homestay.people}</span>
+                    <li className="list-group-item text-secondary">
+                      <i className="fas fa-bed"></i> People
+                      <span className="float-right">{homestay.people}</span>
                     </li>
                   </ul>
                 </div>
-                <div class="col-md-6">
-                  <ul class="list-group list-group-flush">
-                    <li class="list-group-item text-secondary">
-                      <i class="fas fa-car"></i> City:
-                      <span class="float-right">{homestay.city}</span>
+                <div className="col-md-6">
+                  <ul className="list-group list-group-flush">
+                    <li className="list-group-item text-secondary">
+                      <i className="fas fa-car"></i> City:
+                      <span className="float-right">{homestay.city}</span>
                     </li>
-                    <li class="list-group-item text-secondary">
-                      <i class="fas fa-bath"></i> Pool:
+                    <li className="list-group-item text-secondary">
+                      <i className="fas fa-bath"></i> Pool:
                       {homestay.pool ? (
-                        <span class="float-right">Yes</span>
+                        <span className="float-right">Yes</span>
                       ) : (
-                        <span class="float-right">No</span>
+                        <span className="float-right">No</span>
                       )}
                     </li>
                   </ul>
                 </div>
               </div>
 
-              <div class="row mb-5">
-                <div class="col-md-12">{homestay.description}</div>
+              <div className="row mb-5">
+                <h5>Description:</h5>
+                <div className="col-md-12">{homestay.description}</div>
+              </div>
+
+              <div className="row mb-5">
+                <h5>Services:</h5>
+                {serviceList}
               </div>
             </div>
-            <div class="col-md-3">
-              <div class="card mb-3">
+            <div className="col-md-3">
+              <div className="card mb-3">
                 <img
-                  class="card-img-top"
+                  className="card-img-top"
                   src="assets/img/realtors/kyle.jpg"
                   alt="Seller of the month"
                 />
-                <div class="card-body">
-                  <h5 class="card-title">Homestay Owner</h5>
-                  <h6 class="text-secondary">{owner.name}</h6>
+                <div className="card-body">
+                  <h5 className="card-title">Homestay Owner</h5>
+                  <h6 className="text-secondary">{owner.name}</h6>
                 </div>
               </div>
-              <button
-                class="btn-primary btn-block btn-lg"
-                onClick={showModalHandler}
-              >
-                Add service
-              </button>
+              {owner.username === username && (
+                <div>
+                  <button
+                    className="btn-primary btn-block"
+                    style={{ borderRadius: "10px", padding: "4px" }}
+                    onClick={showModalHandler}
+                  >
+                    Add service
+                  </button>
+                  <Link
+                    to={editLink}
+                    className="btn-primary btn-block text-center"
+                    style={{ borderRadius: "10px", padding: "5px" }}
+                  >
+                    Edit homestay
+                  </Link>
+                </div>
+              )}
             </div>
           </div>
         </div>

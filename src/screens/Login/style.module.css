@@ -41,10 +41,8 @@ input {
 
 form {
   display: flex;
-  align-items: center;
   justify-content: center;
   flex-direction: column;
-  padding: 0rem 5rem;
   transition: all 0.2s 0.7s;
   overflow: hidden;
   grid-column: 1 / 2;
@@ -52,8 +50,7 @@ form {
 }
 
 form.sign-up-form {
-  opacity: 0;
-  z-index: 1;
+  z-index: 2;
 }
 
 form.sign-in-form {
@@ -249,8 +246,8 @@ form.sign-in-form {
 }
 
 .container1.sign-up-mode form.sign-up-form {
-  opacity: 1;
-  z-index: 2;
+  opacity: 0;
+  z-index: 1;
 }
 
 .container1.sign-up-mode form.sign-in-form {

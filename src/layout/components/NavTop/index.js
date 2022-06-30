@@ -1,15 +1,20 @@
 import { Link, NavLink } from "react-router-dom";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 import "../../../assets/css/bootstrap.css";
 import "../../../assets/css/all.css";
 import "../../../assets/css/lightbox.min.css";
 import "../../../assets/css/style.css";
-import { getCookie } from "../../../constant/request";
 import useAuthen from "../../../hooks/useAuthen";
 
 const NavTop = () => {
   const { isAuthenticated } = useAuthen();
+  const [auth, setAuth] = useState(false);
+  useCallback(() => {
+    if (isAuthenticated) {
+      setAuth(true);
+    }
+  }, []);
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-hb sticky-top">
       {/* <a class="navbar-brand" href="/home">
@@ -41,7 +46,7 @@ const NavTop = () => {
             </NavLink>
           </li>
         </ul>
-        {isAuthenticated ? (
+        {auth ? (
           <ul className="navbar-nav ml-auto">
             <li class="nav-item mr-3">
               <NavLink to="/login" className="nav-link ">
