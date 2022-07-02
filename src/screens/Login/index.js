@@ -14,6 +14,7 @@ const LoginImpl = () => {
   const navigate = useNavigate();
   const { handleSignup, handleLogin } = useLoginContext();
   const [username, setUsername] = useState("");
+  const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -63,7 +64,7 @@ const LoginImpl = () => {
             <form
               onSubmit={(e) => {
                 e.preventDefault();
-                handleSignup(username, password, phone, email, role);
+                handleSignup(username, name, password, phone, email, role);
               }}
               className={classes["sign-up-form"]}
               style={{ alignItems: "center" }}
@@ -76,6 +77,15 @@ const LoginImpl = () => {
                   placeholder="Username"
                   onChange={(e) => setUsername(e.target.value)}
                   value={username}
+                />
+              </div>
+              <div className={classes["input-field"]}>
+                <i className="fas fa-user"></i>
+                <input
+                  type="text"
+                  placeholder="Name"
+                  onChange={(e) => setName(e.target.value)}
+                  value={name}
                 />
               </div>
               <div className={classes["input-field"]}>

@@ -62,7 +62,7 @@ const EditService = () => {
             <div className="card mt-6">
               <div
                 className="card-header bg-hb text-light"
-                style={{ backgroundColor: "rgb(147, 149, 240)" }}
+                style={{ backgroundColor: "#7D9BF6" }}
               >
                 <h4> Edit Service</h4>
               </div>

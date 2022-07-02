@@ -18,6 +18,7 @@ const HomestayPage = (props) => {
   let { id } = useParams();
   const { username } = useAuthen();
   const editLink = `/homestays/${id}/edit`;
+  const bookingListLink = `/bookings/${id}`;
 
   const [homestay, setHomestay] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -87,6 +88,8 @@ const HomestayPage = (props) => {
       toast.error("Something went wrong! </br>Cannot create homestay");
       return;
     }
+    setServices((prev) => [...prev, data]);
+    setShowModal(false);
   };
 
   //loading
@@ -200,6 +203,13 @@ const HomestayPage = (props) => {
                     style={{ borderRadius: "10px", padding: "5px" }}
                   >
                     Edit homestay
+                  </Link>
+                  <Link
+                    to={bookingListLink}
+                    className="btn-primary btn-block text-center"
+                    style={{ borderRadius: "10px", padding: "5px" }}
+                  >
+                    Booking List
                   </Link>
                 </div>
               )}

@@ -64,7 +64,7 @@ const EditHomestay = () => {
             <div className="card mt-6" style={{ marginTop: "30px" }}>
               <div
                 className="card-header bg-hb text-light"
-                style={{ backgroundColor: "rgb(147, 149, 240)" }}
+                style={{ backgroundColor: "#7D9BF6" }}
               >
                 <h4> Edit homestay</h4>
               </div>

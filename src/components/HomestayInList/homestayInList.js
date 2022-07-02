@@ -2,11 +2,12 @@ import { Link } from "react-router-dom";
 
 const HomestayInList = (props) => {
   var link = `/homestays/${props.id}`;
+  const imgLink = `http://localhost:3333/homestays/${props.id}/images?index=0`;
   return (
     <>
       <div className="col-md-6 col-lg-4 mb-4">
         <div className="card listing-preview">
-          <img alt="" src="../../assets/img/homes/home-1.jpg" />
+          <img alt="" src={imgLink} />
           <div className="card-img-overlay">
             <h2>
               <span className="badge badge-secondary text-white">

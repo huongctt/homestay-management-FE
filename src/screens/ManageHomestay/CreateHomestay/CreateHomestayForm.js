@@ -66,7 +66,7 @@ const HomestayForm = () => {
             <div className="card">
               <div
                 className="card-header bg-hb text-light"
-                style={{ backgroundColor: "rgb(147, 149, 240)" }}
+                style={{ backgroundColor: "#7D9BF6" }}
               >
                 <h4> New homestay</h4>
               </div>

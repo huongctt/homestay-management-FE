@@ -31,8 +31,8 @@
 
 .actions button:hover,
 .actions button:active {
-  background-color: rgb(147, 149, 240);
-  border-color: rgb(147, 149, 240);
+  background-color: #7D9BF6;
+  border-color: #7D9BF6;
   color: white;
 }
 
@@ -41,6 +41,6 @@
 }
 
 .actions .button {
-  background-color: rgb(147, 149, 240);
+  background-color: #7D9BF6;
   color: white;
 }

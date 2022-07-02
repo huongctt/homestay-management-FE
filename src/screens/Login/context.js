@@ -19,8 +19,8 @@ export const LoginContextProvider = ({ children }) => {
     "userid",
     "role",
   ]);
-  const handleSignup = async (username, password, phone, email, role) => {
-    let tmp = `{ "username": "${username}", "password": "${password}", "phone": "${phone}", "email": "${email}", "role": "${role}"}`;
+  const handleSignup = async (username, name, password, phone, email, role) => {
+    let tmp = `{ "username": "${username}","name": "${name}", "password": "${password}", "phone": "${phone}", "email": "${email}", "role": "${role}"}`;
     let params = JSON.parse(tmp);
     if (username && password && phone && email && role) {
       const response = await signup(params);
@@ -30,7 +30,7 @@ export const LoginContextProvider = ({ children }) => {
         await setCookie("userid", response?.user._id);
         await setCookie("role", response.user.role);
 
-        setTimeout(() => window.location.reload(), 2000);
+        navigate("/home");
       } else {
         toast.error("Can not sign up!");
       }

@@ -17,9 +17,9 @@ const NavTop = () => {
   }, []);
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-hb sticky-top">
-      {/* <a class="navbar-brand" href="/home">
-        <img src="assets/img/logo.png" class="logo" alt="">
-      </a> */}
+      <Link className="navbar-brand" to="/home">
+        <img src="../../assets/img/logo2.png" class="logo" alt="" />
+      </Link>
       <button
         className="navbar-toggler"
         type="button"
