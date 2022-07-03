@@ -10,7 +10,7 @@ import {
 import { toast, ToastContainer } from "react-toastify";
 import classes from "../../ManageHomestay/HomestayPage/style.module.css";
 import Modal from "../../../layout/components/Modal";
-import ServiceCard from "../../ManageHomestay/HomestayPage/ServiceCard";
+import { Link } from "react-router-dom";
 
 const EditBooking = () => {
   const { id } = useParams();
@@ -34,6 +34,7 @@ const EditBooking = () => {
   const serviceBookingQuantity = useRef();
 
   const [showModal, setShowModal] = useState(false);
+  const listBokkingLink = "/bookings/" + homestay?._id;
 
   const formatDate = (date) => {
     const format = `${
@@ -408,6 +409,9 @@ const EditBooking = () => {
               </div>
             </div>
             <div className="col-md-3">
+              <Link to={listBokkingLink} style={{ margin: "20px" }}>
+                Back to booking list
+              </Link>
               <button
                 className="btn-primary btn-block"
                 style={{ borderRadius: "10px", padding: "4px" }}

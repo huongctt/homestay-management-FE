@@ -29,6 +29,11 @@ export async function getBooking(id) {
   return getAsyncWithToken(url);
 }
 
+export async function getYourBooking(id) {
+  const url = process.env.REACT_APP_BACK_END + "/bookings/your-booking";
+  return getAsyncWithToken(url);
+}
+
 export async function deleteServiceBooking(id) {
   const url = process.env.REACT_APP_BACK_END + "/service-bookings/" + id;
   return deleteAsyncWithToken(url);

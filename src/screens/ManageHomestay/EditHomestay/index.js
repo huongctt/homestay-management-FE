@@ -5,6 +5,7 @@ import {
   editHomestay,
   getHomestay,
 } from "../../../services/homestayManagementService";
+import { multipleFilesUpload } from "../../../constant/request";
 const EditHomestay = () => {
   const [files, setFiles] = useState(null);
   const nameInput = useRef();
@@ -53,6 +54,12 @@ const EditHomestay = () => {
     if (response.status === 200) {
       toast.success("Update homestay successfully");
     }
+    const formData = new FormData();
+    for (let i = 0; i < files.length; i++) {
+      formData.append("files", files[i]);
+    }
+    const url = process.env.REACT_APP_BACK_END + "/homestays/" + id;
+    const responseUpload = await multipleFilesUpload(url, formData);
   };
 
   return (

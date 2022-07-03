@@ -19,6 +19,7 @@ const HomestayPage = (props) => {
   const { username } = useAuthen();
   const editLink = `/homestays/${id}/edit`;
   const bookingListLink = `/bookings/${id}`;
+  const statisticsLink = `/homestays/${id}/statistics`;
 
   const [homestay, setHomestay] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -178,14 +179,14 @@ const HomestayPage = (props) => {
             </div>
             <div className="col-md-3">
               <div className="card mb-3">
-                <img
-                  className="card-img-top"
-                  src="assets/img/realtors/kyle.jpg"
-                  alt="Seller of the month"
-                />
                 <div className="card-body">
                   <h5 className="card-title">Homestay Owner</h5>
                   <h6 className="text-secondary">{owner.name}</h6>
+                  <h5 className="card-title">Homestay Info</h5>
+                  <h6 className="text-secondary">
+                    Number of Booking: {homestay.bookingNumber}
+                  </h6>
+                  <h6 className="text-secondary">Rate: 4.8</h6>
                 </div>
               </div>
               {owner.username === username && (
@@ -210,6 +211,13 @@ const HomestayPage = (props) => {
                     style={{ borderRadius: "10px", padding: "5px" }}
                   >
                     Booking List
+                  </Link>
+                  <Link
+                    to={statisticsLink}
+                    className="btn-primary btn-block text-center"
+                    style={{ borderRadius: "10px", padding: "5px" }}
+                  >
+                    Statistics
                   </Link>
                 </div>
               )}

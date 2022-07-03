@@ -11,7 +11,7 @@ const BookingList = () => {
   const username = useRef("");
   const filter = useRef("");
   const [bookings, setBookings] = useState([]);
-  const [homestay, setHomestay] = useState(null);
+  const [homestayName, setHomestayName] = useState("");
 
   const { homestayId } = useParams();
   const homestayLink = `/homestays/${homestayId}`;
@@ -47,7 +47,6 @@ const BookingList = () => {
     if (filter.current.value) {
       query = query + "&&filter=" + filter.current.value;
     }
-
     const response = await getBookingListByHomestay(query);
 
     if (response.status >= 400) {
@@ -56,7 +55,7 @@ const BookingList = () => {
 
     if (response.status === 200) {
       setBookings(response.data.bookingList);
-      setHomestay(response.data.homestay);
+      setHomestayName(response.data.homestay.name);
     }
   };
   return (
@@ -65,7 +64,7 @@ const BookingList = () => {
       <div class="container">
         <h2 class="text-center mb-5 mt-5 text-info">
           <Link class="text-info" to={homestayLink}>
-            {homestay?.name}
+            {homestayName}
           </Link>
           - Booking Listings
         </h2>

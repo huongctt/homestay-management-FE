@@ -7,14 +7,14 @@ const HomestayInList = (props) => {
     <>
       <div className="col-md-6 col-lg-4 mb-4">
         <div className="card listing-preview">
-          <img alt="" src={imgLink} />
+          {/* <img alt="" src={imgLink} />
           <div className="card-img-overlay">
             <h2>
               <span className="badge badge-secondary text-white">
                 {props.price}
               </span>
             </h2>
-          </div>
+          </div> */}
           <div className="card-body">
             <div className="listing-heading text-center">
               <Link to={link}>

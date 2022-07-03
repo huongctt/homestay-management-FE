@@ -15,6 +15,8 @@ import EditHomestay from "./screens/ManageHomestay/EditHomestay";
 import BookingForm from "./screens/Booking/CreateBooking/BookingForm";
 import BookingList from "./screens/Booking/BookingList";
 import EditBooking from "./screens/Booking/EditBooking";
+import Statistics from "./screens/Statistics";
+import YourBooking from "./screens/Booking/YourBooking";
 const queryClient = new QueryClient();
 function App() {
   return (
@@ -37,10 +39,12 @@ function App() {
           <Route path="homestays/create" element={<CreateHomestay />} />
           <Route path="homestays/:id" element={<HomestayPage />} />
           <Route path="homestays/:id/edit" element={<EditHomestay />} />
+          <Route path="homestays/:id/statistics" element={<Statistics />} />
           <Route path="services/:id/edit" element={<EditService />} />
           <Route path="bookings/:homestayId/create" element={<BookingForm />} />
           <Route path="bookings/:homestayId" element={<BookingList />} />
           <Route path="bookings/:id/edit" element={<EditBooking />} />
+          <Route path="bookings/your-bookings" element={<YourBooking />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </QueryClientProvider>

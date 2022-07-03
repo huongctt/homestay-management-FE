@@ -9,12 +9,13 @@ import useAuthen from "../../../hooks/useAuthen";
 
 const NavTop = () => {
   const { isAuthenticated } = useAuthen();
-  const [auth, setAuth] = useState(false);
-  useCallback(() => {
-    if (isAuthenticated) {
-      setAuth(true);
-    }
-  }, []);
+  // const [auth, setAuth] = useState(false);
+  // useCallback(() => {
+  //   if (isAuthenticated) {
+  //     setAuth(true);
+  //   }
+  // }, [isAuthenticated]);
+  // console.log({ auth });
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-hb sticky-top">
       <Link className="navbar-brand" to="/home">
@@ -46,7 +47,7 @@ const NavTop = () => {
             </NavLink>
           </li>
         </ul>
-        {auth ? (
+        {!isAuthenticated ? (
           <ul className="navbar-nav ml-auto">
             <li class="nav-item mr-3">
               <NavLink to="/login" className="nav-link ">
