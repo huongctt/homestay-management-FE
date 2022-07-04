@@ -13,6 +13,8 @@ import { Slide } from "react-slideshow-image";
 import "react-slideshow-image/dist/styles.css";
 import ServiceCard from "./ServiceCard";
 import useAuthen from "../../../hooks/useAuthen";
+import ReviewCard from "../../../components/ReviewCard/ReviewCard";
+import { getReviewsByHomestayId } from "../../../services/review";
 
 const HomestayPage = (props) => {
   let { id } = useParams();
@@ -27,6 +29,7 @@ const HomestayPage = (props) => {
   const [showModal, setShowModal] = useState(false);
   const [images, setImages] = useState([]);
   const [services, setServices] = useState([]);
+  const [reviews, setReviews] = useState([]);
 
   const serviceName = useRef();
   const servicePrice = useRef();
@@ -48,7 +51,11 @@ const HomestayPage = (props) => {
       const servicesResponse = await getServicesByHomestay(id);
       if (servicesResponse.data.services) {
         setServices(servicesResponse.data.services);
-        console.log({ services });
+      }
+
+      const reviewsResponses = await getReviewsByHomestayId(id);
+      if (reviewsResponses.data.reviews) {
+        setReviews(reviewsResponses.data.reviews);
       }
     }
     getData();
@@ -175,6 +182,18 @@ const HomestayPage = (props) => {
               <div className="row mb-5">
                 <h5>Services:</h5>
                 {serviceList}
+              </div>
+              <div className="row mb-5">
+                <h5>Review:</h5>
+                {reviews?.map((review) => {
+                  return (
+                    <ReviewCard
+                      username={review.user.name}
+                      rate={review.rate}
+                      comment={review.comment}
+                    />
+                  );
+                })}
               </div>
             </div>
             <div className="col-md-3">

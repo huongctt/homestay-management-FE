@@ -34,8 +34,6 @@ const HomestayForm = () => {
       pool: poolInput.current.value,
       description: descriptionInput.current.value,
     };
-    // let tmp = `{ "name": "${data.name}", "address": "${data.address}", "city": "${data.city}", "price": "${data.price}", "people": "${data.people}", "pool": "${data.pool}", "description": "${data.description}" }`;
-    // let params = JSON.parse(tmp);
     const response = await createHomestay(data);
     if (response.status >= 400 || !response) {
       toast.error("Something went wrong! </br>Cannot create homestay");

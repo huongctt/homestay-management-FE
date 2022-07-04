@@ -25,7 +25,6 @@ const EditService = () => {
     }
     if (response.status == 200) {
       toast.success("Edit service successfully!");
-      console.log({ data: response.data });
       setTimeout(() => {
         navigate(`/homestays/${response.data.service?.homestay}`);
       }, 2000);

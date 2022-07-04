@@ -12,18 +12,24 @@ const ServiceCard = (props) => {
         }}
       >
         <div class="card-body">
-          <h5 class="card-title">{props.name}</h5>
-          <p class="card-text">Price: {props.price}</p>
-          <p class="card-text">Description: {props.description}</p>
-          {props.isOwner && (
-            <Link
-              to={linkEdit}
-              class="btn btn-primary"
-              style={{ padding: "4px" }}
-            >
-              Edit Service
-            </Link>
-          )}
+          <div className="row">
+            <div className="col-md-9">
+              <h5 class="card-title">{props.name}</h5>
+              <p class="card-text">Price: {props.price}</p>
+              <p class="card-text">Description: {props.description}</p>
+            </div>
+            <div className="col-md-3">
+              {props.isOwner && (
+                <Link
+                  to={linkEdit}
+                  class="btn btn-primary"
+                  style={{ padding: "4px", margin: "auto" }}
+                >
+                  Edit Service
+                </Link>
+              )}
+            </div>
+          </div>
         </div>
       </div>
     </>

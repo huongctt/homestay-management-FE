@@ -1,15 +1,20 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { getYourBooking } from "../../../services/booking";
 import Table from "react-bootstrap/esm/Table";
 import { format } from "date-fns";
 import classes from "../../ManageHomestay/HomestayPage/style.module.css";
 import Modal from "../../../layout/components/Modal";
+import { Button, Rating, Typography } from "@mui/material";
+import { review } from "../../../services/review";
+import { toast } from "react-toastify";
 
 const YourBooking = () => {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [bookingIdToReview, setBookingIdToReview] = useState("");
+  const [rate, setRate] = useState(5);
+  const comment = useRef();
   useEffect(() => {
     setLoading(true);
     async function getData() {
@@ -28,8 +33,24 @@ const YourBooking = () => {
     );
   }
   //add review
-  const reviewHandler = (e) => {
+  const reviewHandler = async (e) => {
     e.preventDefault();
+    const data = {
+      comment: comment.current.value,
+      rate: rate,
+    };
+    const formData = new FormData();
+    formData.append("rate", rate);
+    formData.append("comment", comment.current.value);
+    const response = await review(bookingIdToReview, formData);
+    if (response.status >= 400) {
+      toast.error("Cannot review now");
+    }
+    if (response.status === 201) {
+      setTimeout(() => {
+        window.location.reload();
+      }, 1500);
+    }
   };
   //modal
   const showModalHandler = () => {
@@ -84,6 +105,11 @@ const YourBooking = () => {
                   {booking.status === "stayed" ? (
                     <td style={{ paddingTop: "10px" }} className="text-center">
                       <button
+                        className="btn"
+                        style={{
+                          borderRadius: "5px",
+                          backgroundColor: "#7D9BF6",
+                        }}
                         onClick={(e) => {
                           e.preventDefault();
                           setShowModal(true);
@@ -105,23 +131,27 @@ const YourBooking = () => {
       {showModal && (
         <Modal onClose={hideModalHandler}>
           <form onSubmit={reviewHandler}>
+            <h5 className="text-center">Review</h5>
             <div className="form-group">
-              <label for="number">Quantity</label>
-              <input
-                style={{ borderRadius: "15px" }}
-                type="Number"
-                name="number"
-                className="form-control"
-                required
+              <label for="number">Rate:</label>
+              {/* <Typography component="legend">Controlled</Typography> */}
+              <Rating
+                name="simple-controlled"
+                value={rate}
+                onChange={(event, newValue) => {
+                  event.preventDefault();
+                  setRate(newValue);
+                }}
               />
             </div>
             <div className="form-group">
-              <label for="number">Comment</label>
-              <input
+              <label for="number">Comment: </label>
+              <textarea
                 style={{ borderRadius: "15px" }}
                 type="Text"
                 name="comment"
                 className="form-control"
+                ref={comment}
                 required
               />
             </div>

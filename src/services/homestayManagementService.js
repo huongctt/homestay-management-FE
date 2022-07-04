@@ -4,6 +4,7 @@ import {
   postAsyncWithToken,
   getAsyncWithToken,
   putAsyncWithToken,
+  getAsync,
 } from "../constant/request";
 import axios from "axios";
 export async function createHomestay(data, image) {
@@ -23,5 +24,5 @@ export async function getListHomestay(userid) {
 
 export async function getHomestay(id) {
   const url = process.env.REACT_APP_BACK_END + `/homestays/${id}`;
-  return getAsyncWithToken(url);
+  return getAsync(url);
 }
