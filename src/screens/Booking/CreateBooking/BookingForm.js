@@ -37,7 +37,6 @@ const BookingForm = () => {
     }-${date.getDate()}-${date.getFullYear()}`;
     return new Date(format);
   };
-  console.log("render");
 
   useEffect(() => {
     var date =

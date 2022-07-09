@@ -39,10 +39,7 @@ const YourBooking = () => {
       comment: comment.current.value,
       rate: rate,
     };
-    const formData = new FormData();
-    formData.append("rate", rate);
-    formData.append("comment", comment.current.value);
-    const response = await review(bookingIdToReview, formData);
+    const response = await review(bookingIdToReview, data);
     if (response.status >= 400) {
       toast.error("Cannot review now");
     }

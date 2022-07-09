@@ -3,6 +3,7 @@ import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { toastError, toastSuccess } from "../../constant/toast";
+import useAuthen from "../../hooks/useAuthen";
 import { login, signup } from "../../services/authService";
 
 //context
@@ -19,6 +20,7 @@ export const LoginContextProvider = ({ children }) => {
     "userid",
     "role",
   ]);
+  const { isAuthenticated, setIsAuthenticated } = useAuthen();
   const handleSignup = async (username, name, password, phone, email, role) => {
     let tmp = `{ "username": "${username}","name": "${name}", "password": "${password}", "phone": "${phone}", "email": "${email}", "role": "${role}"}`;
     let params = JSON.parse(tmp);
@@ -31,6 +33,7 @@ export const LoginContextProvider = ({ children }) => {
         await setCookie("role", response.user.role);
 
         navigate("/home");
+        window.location.reload();
       } else {
         toast.error("Can not sign up!");
       }
@@ -49,8 +52,10 @@ export const LoginContextProvider = ({ children }) => {
         await setCookie("currentuser", response?.token);
         await setCookie("userid", response?.user._id);
         await setCookie("role", response.user.role);
+        setIsAuthenticated(true);
 
         navigate("/home");
+        window.location.reload();
       } else toastError(response?.error);
     } else {
       toastError("Error");

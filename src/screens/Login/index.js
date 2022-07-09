@@ -20,7 +20,6 @@ const LoginImpl = () => {
   const [phone, setPhone] = useState("");
   const [role, setRole] = useState("visitor");
   const [signInWanted, setSignInWanted] = useState(true);
-  console.log(signInWanted);
 
   return (
     <div className={classes["container1"]}>

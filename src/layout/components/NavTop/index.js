@@ -1,21 +1,37 @@
 import { Link, NavLink } from "react-router-dom";
-import { useCallback, useState } from "react";
-
-import "../../../assets/css/bootstrap.css";
-import "../../../assets/css/all.css";
-import "../../../assets/css/lightbox.min.css";
-import "../../../assets/css/style.css";
+import { useCallback, useEffect, useState } from "react";
 import useAuthen from "../../../hooks/useAuthen";
+import { logoutUser, getUserInfo } from "../../../services/authService";
+import { useNavigate } from "react-router-dom";
+import { useCookies } from "react-cookie";
 
 const NavTop = () => {
-  const { isAuthenticated } = useAuthen();
-  // const [auth, setAuth] = useState(false);
-  // useCallback(() => {
-  //   if (isAuthenticated) {
-  //     setAuth(true);
-  //   }
-  // }, [isAuthenticated]);
-  // console.log({ auth });
+  const {
+    isAuthenticated,
+    setIsAuthenticated,
+    isHomestayOwner,
+    setIsHomestayOwner,
+  } = useAuthen();
+  const [cookies, setCookie, removeCookie] = useCookies([
+    "currentuser",
+    "userid",
+  ]);
+  const navigate = useNavigate();
+
+  const handleLogout = async ({ id, link }) => {
+    await logoutUser();
+    removeCookie("currentuser");
+    removeCookie("userid");
+    setIsAuthenticated(false);
+
+    console.log("window.location.pathname", window.location.pathname);
+    if (window.location.pathname === "/") {
+      window.location.reload();
+    } else {
+      navigate("/");
+      window.location.reload();
+    }
+  };
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-hb sticky-top">
       <Link className="navbar-brand" to="/home">
@@ -36,16 +52,32 @@ const NavTop = () => {
               Home
             </NavLink>
           </li>
-          <li className="nav-item mr-3">
-            <NavLink to="/homestays/create" className="nav-link ">
-              Create Homestay
-            </NavLink>
-          </li>
-          <li className="nav-item mr-3">
-            <NavLink to="/homestays" className="nav-link ">
-              Homestay Listings
-            </NavLink>
-          </li>
+          {isAuthenticated && !isHomestayOwner && (
+            <li>
+              <NavLink to="/bookings/your-bookings" className="nav-link ">
+                Your Bookings
+              </NavLink>
+            </li>
+          )}
+          {isHomestayOwner && isAuthenticated && (
+            <>
+              <li className="nav-item mr-3">
+                <NavLink to="/homestays/create" className="nav-link ">
+                  Create Homestay
+                </NavLink>
+              </li>
+              <li className="nav-item mr-3">
+                <NavLink to="/homestays" className="nav-link ">
+                  Homestay Listings
+                </NavLink>
+              </li>
+              <li className="nav-item mr-3">
+                <NavLink to="/discounts" className="nav-link ">
+                  Discounts
+                </NavLink>
+              </li>
+            </>
+          )}
         </ul>
         {!isAuthenticated ? (
           <ul className="navbar-nav ml-auto">
@@ -59,10 +91,10 @@ const NavTop = () => {
         ) : (
           <ul className="navbar-nav ml-auto">
             <li class="nav-item mr-3">
-              <NavLink to="/login" className="nav-link ">
+              <p className="nav-link " onClick={handleLogout}>
                 <i class="fas fa-sign-in-alt"></i>
                 Logout
-              </NavLink>
+              </p>
             </li>
           </ul>
         )}

@@ -27,6 +27,7 @@ const HomestayListings = () => {
         address={homestays[i].address}
         people={homestays[i].people}
         pool={homestays[i].pool}
+        bookingNumber={homestays[i].bookingNumber}
       />
     );
   }

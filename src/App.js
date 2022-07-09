@@ -17,20 +17,13 @@ import BookingList from "./screens/Booking/BookingList";
 import EditBooking from "./screens/Booking/EditBooking";
 import Statistics from "./screens/Statistics";
 import YourBooking from "./screens/Booking/YourBooking";
+import Discount from "./screens/Discount";
 const queryClient = new QueryClient();
 function App() {
   return (
     <>
       <QueryClientProvider client={queryClient}>
         <NavTop />
-        {/* <Routes>
-        <Route index element={<Home />} exact />
-        <Route path="/login" element={<Login />} />
-        <Route path="homestays" element={<Home />}>
-          <Route path="create" element={<CreateHomestay />} />
-        </Route>
-        <Route path="*" element={<NotFound />} />
-      </Routes> */}
         <Routes>
           <Route index element={<Home />} />
           <Route path="login" element={<Login />} />
@@ -45,6 +38,7 @@ function App() {
           <Route path="bookings/:homestayId" element={<BookingList />} />
           <Route path="bookings/:id/edit" element={<EditBooking />} />
           <Route path="bookings/your-bookings" element={<YourBooking />} />
+          <Route path="discounts" element={<Discount />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </QueryClientProvider>

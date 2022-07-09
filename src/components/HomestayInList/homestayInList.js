@@ -7,14 +7,14 @@ const HomestayInList = (props) => {
     <>
       <div className="col-md-6 col-lg-4 mb-4">
         <div className="card listing-preview">
-          {/* <img alt="" src={imgLink} />
+          <img alt="" src={imgLink} />
           <div className="card-img-overlay">
             <h2>
               <span className="badge badge-secondary text-white">
                 {props.price}
               </span>
             </h2>
-          </div> */}
+          </div>
           <div className="card-body">
             <div className="listing-heading text-center">
               <Link to={link}>
@@ -44,7 +44,7 @@ const HomestayInList = (props) => {
                 <i className="fas fa-bed"></i> Rate: 3
               </div>
               <div className="col-6">
-                <i className="fas fa-bath"></i> Bookings: abc
+                <i className="fas fa-bath"></i> Bookings: {props.bookingNumber}
               </div>
             </div>
             {/* <div class="row py-2 text-secondary">

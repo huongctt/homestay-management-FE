@@ -15,13 +15,17 @@ import ServiceCard from "./ServiceCard";
 import useAuthen from "../../../hooks/useAuthen";
 import ReviewCard from "../../../components/ReviewCard/ReviewCard";
 import { getReviewsByHomestayId } from "../../../services/review";
+import { Rating } from "@mui/material";
+import { getDiscountsByHomestay } from "../../../services/discount";
+import DiscountCardInPage from "./DiscountCardInPage";
 
 const HomestayPage = (props) => {
   let { id } = useParams();
-  const { username } = useAuthen();
+  const { username, isAuthenticated } = useAuthen();
   const editLink = `/homestays/${id}/edit`;
   const bookingListLink = `/bookings/${id}`;
   const statisticsLink = `/homestays/${id}/statistics`;
+  const bookLink = `bookings/${id}/creates`;
 
   const [homestay, setHomestay] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -30,6 +34,8 @@ const HomestayPage = (props) => {
   const [images, setImages] = useState([]);
   const [services, setServices] = useState([]);
   const [reviews, setReviews] = useState([]);
+  const [discounts, setDiscounts] = useState([]);
+  const [averageStar, setAverageStar] = useState(0);
 
   const serviceName = useRef();
   const servicePrice = useRef();
@@ -56,6 +62,12 @@ const HomestayPage = (props) => {
       const reviewsResponses = await getReviewsByHomestayId(id);
       if (reviewsResponses.data.reviews) {
         setReviews(reviewsResponses.data.reviews);
+        setAverageStar(reviewsResponses.data.averageStar);
+      }
+
+      const discountsResponses = await getDiscountsByHomestay(id);
+      if (discountsResponses.data.discounts) {
+        setDiscounts(discountsResponses.data.discounts);
       }
     }
     getData();
@@ -205,7 +217,15 @@ const HomestayPage = (props) => {
                   <h6 className="text-secondary">
                     Number of Booking: {homestay.bookingNumber}
                   </h6>
-                  <h6 className="text-secondary">Rate: 4.8</h6>
+                  <h6 className="text-secondary">
+                    Rate:
+                    <Rating
+                      name="read-only"
+                      value={averageStar}
+                      readOnly
+                      style={{ padding: "0px 15px" }}
+                    />
+                  </h6>
                 </div>
               </div>
               {owner.username === username && (
@@ -240,6 +260,27 @@ const HomestayPage = (props) => {
                   </Link>
                 </div>
               )}
+              {owner.username !== username && isAuthenticated && (
+                <Link
+                  to={bookLink}
+                  className="btn-primary btn-block text-center"
+                  style={{ borderRadius: "10px", padding: "5px" }}
+                >
+                  Book this homestay
+                </Link>
+              )}
+              {discounts.length && (
+                <p className="text-center" style={{ marginTop: "25px" }}>
+                  Discounts:
+                </p>
+              )}
+              {discounts?.map((discount) => (
+                <DiscountCardInPage
+                  checkin={discount.checkin}
+                  checkout={discount.checkout}
+                  percentage={discount.percentage}
+                />
+              ))}
             </div>
           </div>
         </div>
