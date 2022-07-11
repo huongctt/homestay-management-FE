@@ -25,7 +25,7 @@ const HomestayPage = (props) => {
   const editLink = `/homestays/${id}/edit`;
   const bookingListLink = `/bookings/${id}`;
   const statisticsLink = `/homestays/${id}/statistics`;
-  const bookLink = `bookings/${id}/creates`;
+  const bookLink = `/bookings/${id}/create`;
 
   const [homestay, setHomestay] = useState(null);
   const [isLoading, setIsLoading] = useState(true);

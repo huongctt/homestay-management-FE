@@ -9,7 +9,9 @@ const DiscountCard = (props) => {
               <h4 style={{ marginTop: "10px" }}>{props.percentage}%</h4>
             </div>
             <div className="text-center">
-              <p>Quantity: {props.quantity}</p>
+              <p>
+                Used Quantity: {props.used}/{props.quantity}
+              </p>
             </div>
           </div>
           <div className="card-body">

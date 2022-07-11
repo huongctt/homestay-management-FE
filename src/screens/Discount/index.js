@@ -32,7 +32,6 @@ const Discount = () => {
     }
     getData();
   }, []);
-  console.log({ activeDisounts });
 
   const formatDate = (date) => {
     const format = `${
@@ -97,6 +96,7 @@ const Discount = () => {
           {activeDisounts?.map((discount) => (
             <DiscountCard
               quantity={discount.quantity}
+              used={discount.used}
               checkin={discount.checkin}
               checkout={discount.checkout}
               percentage={discount.percentage}
@@ -109,6 +109,7 @@ const Discount = () => {
           {inactiveDisounts?.map((discount) => (
             <DiscountCard
               quantity={discount.quantity}
+              used={discount.used}
               checkin={discount.checkin}
               checkout={discount.checkout}
               percentage={discount.percentage}
@@ -164,13 +165,7 @@ const Discount = () => {
                       type="checkbox"
                       id="inlineCheckbox1"
                       value={homestay._id}
-                      // checked={checkedState[index]}
                       onChange={() => handleOnChange(homestay._id)}
-                      // onClick={(e) => {
-                      //   e.preventDefault();
-                      //   console.log(e.target.value);
-                      //   console.log(e.target.checked);
-                      // }}
                     />
                     <label class="form-check-label" for="inlineCheckbox1">
                       {homestay.name}

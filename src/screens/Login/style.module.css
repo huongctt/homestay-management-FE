@@ -44,7 +44,6 @@ form {
   justify-content: center;
   flex-direction: column;
   transition: all 0.2s 0.7s;
-  overflow: hidden;
   grid-column: 1 / 2;
   grid-row: 1 / 2;
 }
@@ -245,7 +244,7 @@ form.sign-in-form {
   left: 25%;
 }
 
-.container1.sign-up-mode form.sign-up-form {
+/* .container1.sign-up-mode form.sign-up-form {
   opacity: 0;
   z-index: 1;
 }
@@ -253,7 +252,7 @@ form.sign-in-form {
 .container1.sign-up-mode form.sign-in-form {
   opacity: 0;
   z-index: 1;
-}
+} */
 
 .container1.sign-up-mode .right-panel .image,
 .container1.sign-up-mode .right-panel .content {

@@ -6,9 +6,9 @@ export function getCookie(name = "currentuser") {
   return v ? v[2] : null;
 }
 
-export async function getAsync(url, param = {}, language = "vi") {
+export async function getAsync(url, params = {}, language = "vi") {
   try {
-    const response = await Axios.get(url, param, {
+    const response = await Axios.get(url, params, {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",

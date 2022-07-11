@@ -1,4 +1,8 @@
-import { postAsyncWithToken, getAsyncWithToken } from "../constant/request";
+import {
+  postAsyncWithToken,
+  getAsyncWithToken,
+  getAsync,
+} from "../constant/request";
 export async function createDiscount(data) {
   const url = process.env.REACT_APP_BACK_END + "/discounts";
   return postAsyncWithToken(url, data);
@@ -9,7 +13,8 @@ export async function getListDiscount() {
   return getAsyncWithToken(url);
 }
 
-export async function getDiscountsByHomestay(id) {
+export async function getDiscountsByHomestay(id, params = {}) {
+  console.log({ params });
   const url = process.env.REACT_APP_BACK_END + "/discounts/homestays/" + id;
-  return getAsyncWithToken(url);
+  return getAsync(url, params);
 }
