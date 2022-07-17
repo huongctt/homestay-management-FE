@@ -18,6 +18,7 @@ import { getReviewsByHomestayId } from "../../../services/review";
 import { Rating } from "@mui/material";
 import { getDiscountsByHomestay } from "../../../services/discount";
 import DiscountCardInPage from "./DiscountCardInPage";
+import MapView from "./MapView";
 
 const HomestayPage = (props) => {
   let { id } = useParams();
@@ -185,6 +186,12 @@ const HomestayPage = (props) => {
                   </ul>
                 </div>
               </div>
+              {homestay && (
+                <MapView
+                  longitude={homestay.longitude}
+                  latitude={homestay.latitude}
+                />
+              )}
 
               <div className="row mb-5">
                 <h5>Description:</h5>

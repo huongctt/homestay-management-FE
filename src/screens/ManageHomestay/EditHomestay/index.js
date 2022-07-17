@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import {
@@ -6,15 +6,20 @@ import {
   getHomestay,
 } from "../../../services/homestayManagementService";
 import { multipleFilesUpload } from "../../../constant/request";
+import defaultGeo from "../../../constant/geolist";
+import MapInForm from "../../../components/Map/MapInForm";
 const EditHomestay = () => {
   const [files, setFiles] = useState(null);
   const nameInput = useRef();
   const addressInput = useRef();
-  const cityInput = useRef();
+  // const cityInput = useRef();
   const priceInput = useRef();
   const peopleInput = useRef();
   const poolInput = useRef();
   const descriptionInput = useRef();
+  const [cityInput, setCityInput] = useState("Ha Noi");
+  const [longitude, setLongitude] = useState(defaultGeo.get("Ha Noi")[0]);
+  const [latitude, setLatitude] = useState(defaultGeo.get("Ha Noi")[1]);
 
   let { id } = useParams();
   const navigate = useNavigate();
@@ -26,25 +31,35 @@ const EditHomestay = () => {
       if (response.data.homestay) {
         nameInput.current.value = response.data.homestay.name;
         addressInput.current.value = response.data.homestay.address;
-        cityInput.current.value = response.data.homestay.city;
         priceInput.current.value = response.data.homestay.price;
         peopleInput.current.value = response.data.homestay.people;
         descriptionInput.current.value = response.data.homestay.description;
+        setCityInput(response.data.homestay.city);
+        setLongitude(response.data.homestay.longitude);
+        setLatitude(response.data.homestay.latitude);
       }
     }
     getData();
   }, []);
+
+  const setLongLat = (longitude, latitude) => {
+    setLongitude(longitude);
+    setLatitude(latitude);
+  };
+  console.log({ longitude });
 
   const handleEdit = async (event) => {
     event.preventDefault();
     const data = {
       name: nameInput.current.value,
       address: addressInput.current.value,
-      city: cityInput.current.value,
+      city: cityInput,
       price: priceInput.current.value,
       people: peopleInput.current.value,
       pool: poolInput.current.value,
       description: descriptionInput.current.value,
+      longitude: longitude,
+      latitude: latitude,
     };
     const response = await editHomestay(id, data);
     if (response.status >= 400 || !response) {
@@ -54,12 +69,14 @@ const EditHomestay = () => {
     if (response.status === 200) {
       toast.success("Update homestay successfully");
     }
-    const formData = new FormData();
-    for (let i = 0; i < files.length; i++) {
-      formData.append("files", files[i]);
+    if (files?.length) {
+      const formData = new FormData();
+      for (let i = 0; i < files.length; i++) {
+        formData.append("files", files[i]);
+      }
+      const url = process.env.REACT_APP_BACK_END + "/homestays/" + id;
+      const responseUpload = await multipleFilesUpload(url, formData);
     }
-    const url = process.env.REACT_APP_BACK_END + "/homestays/" + id;
-    const responseUpload = await multipleFilesUpload(url, formData);
   };
 
   return (
@@ -106,7 +123,12 @@ const EditHomestay = () => {
                       className="form-control"
                       id="type"
                       style={{ borderRadius: "15px" }}
-                      ref={cityInput}
+                      value={cityInput}
+                      onChange={(e) => {
+                        setCityInput(e.target.value);
+                        setLongitude(defaultGeo.get(e.target.value)[0]);
+                        setLatitude(defaultGeo.get(e.target.value)[1]);
+                      }}
                     >
                       <option value="Ha Noi">Ha Noi</option>
                       <option value="Ho Chi Minh">Ho Chi Minh</option>
@@ -167,6 +189,11 @@ const EditHomestay = () => {
                     type="file"
                     multiple
                     onChange={(e) => setFiles(e.target.files)}
+                  />
+                  <MapInForm
+                    longitude={longitude || 105.824}
+                    latitude={latitude || 21.03}
+                    sendData={setLongLat}
                   />
 
                   <input

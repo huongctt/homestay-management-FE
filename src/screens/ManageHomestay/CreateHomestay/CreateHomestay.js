@@ -3,7 +3,10 @@ import HomestayForm from "./CreateHomestayForm";
 const CreateHomestay = () => {
   return (
     <>
-      <h1> Create Homestay</h1>;
+      <h2 className="text-center" style={{ margin: "25px" }}>
+        Create Homestay
+      </h2>
+      ;
       <HomestayForm />
     </>
   );

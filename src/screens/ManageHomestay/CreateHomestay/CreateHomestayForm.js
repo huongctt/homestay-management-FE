@@ -1,23 +1,21 @@
 import "../../../assets/css/all.css";
 import "../../../assets/css/bootstrap.css";
 import "../../../assets/css/style.css";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { createHomestay } from "../../../services/homestayManagementService";
 import { multipleFilesUpload } from "../../../constant/request";
+import MapInForm from "../../../components/Map/MapInForm";
+import defaultGeo from "../../../constant/geolist";
 const HomestayForm = () => {
-  // const [name, setName] = useState("");
-  // const [address, setAddress] = useState("");
-  // const [city, setCity] = useState("Ha Noi");
-  // const [price, setPrice] = useState("");
-  // const [people, setPeople] = useState("");
-  // const [pool, setPool] = useState(false);
-  // const [description, setDescription] = useState("");
   const [files, setFiles] = useState(null);
+  const [cityInput, setCityInput] = useState("Ha Noi");
+  const [longitude, setLongitude] = useState(defaultGeo.get(cityInput)[0]);
+  const [latitude, setLatitude] = useState(defaultGeo.get(cityInput)[1]);
   const nameInput = useRef();
   const addressInput = useRef();
-  const cityInput = useRef();
+  // const cityInput = useRef();
   const priceInput = useRef();
   const peopleInput = useRef();
   const poolInput = useRef();
@@ -28,11 +26,13 @@ const HomestayForm = () => {
     const data = {
       name: nameInput.current.value,
       address: addressInput.current.value,
-      city: cityInput.current.value,
+      city: cityInput,
       price: priceInput.current.value,
       people: peopleInput.current.value,
       pool: poolInput.current.value,
       description: descriptionInput.current.value,
+      longitude: longitude,
+      latitude: latitude,
     };
     const response = await createHomestay(data);
     if (response.status >= 400 || !response) {
@@ -54,6 +54,17 @@ const HomestayForm = () => {
       toast.success("Create homestay successfully!");
     }
   };
+
+  useEffect(() => {
+    setLongitude(defaultGeo.get(cityInput)[0]);
+    setLatitude(defaultGeo.get(cityInput)[1]);
+  }, [cityInput]);
+
+  const setLongLat = (longitude, latitude) => {
+    setLongitude(longitude);
+    setLatitude(latitude);
+  };
+  console.log({ longitude });
 
   return (
     <>
@@ -99,7 +110,8 @@ const HomestayForm = () => {
                       class="form-control"
                       id="type"
                       style={{ borderRadius: "15px" }}
-                      ref={cityInput}
+                      value={cityInput}
+                      onChange={(e) => setCityInput(e.target.value)}
                     >
                       <option value="Ha Noi">Ha Noi</option>
                       <option value="Ho Chi Minh">Ho Chi Minh</option>
@@ -160,6 +172,11 @@ const HomestayForm = () => {
                     type="file"
                     multiple
                     onChange={(e) => setFiles(e.target.files)}
+                  />
+                  <MapInForm
+                    longitude={longitude || 105.824}
+                    latitude={latitude || 21.03}
+                    sendData={setLongLat}
                   />
 
                   <input
