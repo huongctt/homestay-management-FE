@@ -53,11 +53,23 @@ const NavTop = () => {
             </NavLink>
           </li>
           {isAuthenticated && !isHomestayOwner && (
-            <li>
-              <NavLink to="/bookings/your-bookings" className="nav-link ">
-                Your Bookings
-              </NavLink>
-            </li>
+            <>
+              <li>
+                <NavLink to="/bookings/your-bookings" className="nav-link ">
+                  Your Bookings
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/notifications" className="nav-link ">
+                  Notifications
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/chats" className="nav-link ">
+                  Chats
+                </NavLink>
+              </li>
+            </>
           )}
           {isHomestayOwner && isAuthenticated && (
             <>
@@ -74,6 +86,11 @@ const NavTop = () => {
               <li className="nav-item mr-3">
                 <NavLink to="/discounts" className="nav-link ">
                   Discounts
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/chats" className="nav-link ">
+                  Chats
                 </NavLink>
               </li>
             </>

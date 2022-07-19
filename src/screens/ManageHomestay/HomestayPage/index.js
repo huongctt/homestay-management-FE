@@ -112,6 +112,7 @@ const HomestayPage = (props) => {
     setServices((prev) => [...prev, data]);
     setShowModal(false);
   };
+  const chatLink = `/chats/${owner?._id}`;
 
   //loading
   if (!isLoading && !homestay) {
@@ -268,13 +269,23 @@ const HomestayPage = (props) => {
                 </div>
               )}
               {owner.username !== username && isAuthenticated && (
-                <Link
-                  to={bookLink}
-                  className="btn-primary btn-block text-center"
-                  style={{ borderRadius: "10px", padding: "5px" }}
-                >
-                  Book this homestay
-                </Link>
+                <>
+                  <Link
+                    to={bookLink}
+                    className="btn-primary btn-block text-center"
+                    style={{ borderRadius: "10px", padding: "5px" }}
+                  >
+                    Book this homestay
+                  </Link>
+
+                  <Link
+                    to={chatLink}
+                    className="btn-primary btn-block text-center"
+                    style={{ borderRadius: "10px", padding: "5px" }}
+                  >
+                    Chat
+                  </Link>
+                </>
               )}
               {discounts.length && (
                 <p className="text-center" style={{ marginTop: "25px" }}>

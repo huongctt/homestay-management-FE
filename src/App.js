@@ -18,6 +18,9 @@ import EditBooking from "./screens/Booking/EditBooking";
 import Statistics from "./screens/Statistics";
 import YourBooking from "./screens/Booking/YourBooking";
 import Discount from "./screens/Discount";
+import Notification from "./screens/Notification";
+import ChatPage from "./screens/Chat/ChatPage";
+import Chat from "./screens/Chat";
 const queryClient = new QueryClient();
 function App() {
   return (
@@ -28,6 +31,9 @@ function App() {
           <Route index element={<Home />} />
           <Route path="login" element={<Login />} />
           <Route path="home" element={<Home />} />
+          <Route path="notifications" element={<Notification />} />
+          <Route path="chats" element={<Chat />} />
+          <Route path="chats/:id" element={<ChatPage />} />
           <Route path="homestays" element={<HomestayListings />} />
           <Route path="homestays/create" element={<CreateHomestay />} />
           <Route path="homestays/:id" element={<HomestayPage />} />
