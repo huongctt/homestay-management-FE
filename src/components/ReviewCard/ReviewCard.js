@@ -1,5 +1,6 @@
 import { Rating } from "@mui/material";
 const ReviewCard = (props) => {
+  const linkImage = `http://localhost:3333/reviews/${props.id}/image`;
   return (
     <>
       <div className="card" style={{ width: "100%", marginTop: "15px" }}>
@@ -14,9 +15,11 @@ const ReviewCard = (props) => {
             />
             <p style={{ padding: "0px 15px" }}>Comment: {props.comment}</p>
           </div>
-          <div className="col-md-3">
-            <img src="http://localhost:3333/homestays/62bd72ed92f6cf0b903ae891/images?index=0" />
-          </div>
+          {props.image && (
+            <div className="col-md-3">
+              <img src={linkImage} />
+            </div>
+          )}
         </div>
       </div>
     </>

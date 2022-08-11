@@ -28,6 +28,7 @@ const HomestayListings = () => {
         people={homestays[i].people}
         pool={homestays[i].pool}
         bookingNumber={homestays[i].bookingNumber}
+        rate={homestays[i].rate}
       />
     );
   }

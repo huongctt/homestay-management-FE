@@ -12,6 +12,11 @@ export async function createHomestay(data, image) {
   return postAsyncWithToken(url, data);
 }
 
+export async function deleteHomestay(id) {
+  const url = process.env.REACT_APP_BACK_END + `/homestays/${id}/delete`;
+  return postAsyncWithToken(url);
+}
+
 export async function editHomestay(id, data) {
   const url = process.env.REACT_APP_BACK_END + "/homestays/" + id;
   return putAsyncWithToken(url, data);

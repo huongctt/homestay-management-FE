@@ -1,4 +1,7 @@
 import { format } from "date-fns";
+import classes from "../ManageHomestay/HomestayPage/style.module.css";
+import { ToastContainer, toast } from "react-toastify";
+
 const DiscountCard = (props) => {
   return (
     <>
@@ -28,6 +31,20 @@ const DiscountCard = (props) => {
               ))}
             </div>
           </div>
+          {props.active && (
+            <div className={classes.actions}>
+              <button
+                className={classes["button--alt"]}
+                style={{ marginBottom: "20px" }}
+                onClick={(e) => {
+                  e.preventDefault();
+                  props.onDeactivate(props.id);
+                }}
+              >
+                Deactivate
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </>

@@ -41,7 +41,7 @@ const HomestayInList = (props) => {
             </div>
             <div className="row py-2 text-secondary">
               <div className="col-6">
-                <i className="fas fa-bed"></i> Rate: 3
+                <i className="fas fa-bed"></i> Rate: {props.rate}
               </div>
               <div className="col-6">
                 <i className="fas fa-bath"></i> Bookings: {props.bookingNumber}

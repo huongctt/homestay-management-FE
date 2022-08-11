@@ -2,7 +2,6 @@ import { Map as MapItem, Marker } from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { IoIosPin } from "react-icons/io";
 const MapView = (props) => {
-  console.log({ props });
   const initialViewState = {
     longitude: props.longitude,
     latitude: props.latitude,

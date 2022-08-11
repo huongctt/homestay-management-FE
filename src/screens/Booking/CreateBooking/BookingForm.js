@@ -184,6 +184,7 @@ const BookingForm = () => {
                           marginTop: "20px",
                           padding: "10px",
                           borderRadius: "10px",
+                          color: "black",
                         }}
                         ref={email}
                       />
@@ -197,6 +198,7 @@ const BookingForm = () => {
                           marginTop: "20px",
                           padding: "10px",
                           borderRadius: "10px",
+                          color: "black",
                         }}
                         ref={phone}
                       />
@@ -212,6 +214,7 @@ const BookingForm = () => {
                           marginTop: "20px",
                           padding: "10px",
                           borderRadius: "10px",
+                          color: "black",
                         }}
                         ref={people}
                       />

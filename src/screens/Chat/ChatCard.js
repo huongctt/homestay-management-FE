@@ -13,10 +13,18 @@ const ChatCard = (props) => {
           {format(new Date(props.time), "dd/MM/yyyy hh:mm")}
         </Card.Subtitle>
         {props.fromMe ? (
-          <Card.Text>Me: {props.lastMessage?.message}</Card.Text>
+          <Card.Text>
+            Me:{" "}
+            {props.lastMessage.message.length < 50
+              ? props.lastMessage?.message
+              : props.lastMessage.message.substring(0, 49) + "..."}
+          </Card.Text>
         ) : (
           <Card.Text>
-            {props.name} {": "} {props.lastMessage?.message}
+            {props.name} {": "}{" "}
+            {props.lastMessage.message.length < 50
+              ? props.lastMessage?.message
+              : props.lastMessage.message.substring(0, 49) + "..."}
           </Card.Text>
         )}
       </Card.Body>

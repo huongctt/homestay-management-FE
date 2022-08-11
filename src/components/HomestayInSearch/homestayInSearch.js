@@ -7,7 +7,11 @@ const HomestayInSearch = (props) => {
     <>
       <div className={classes["l-post"]}>
         <figure>
-          <img alt="" src={imgLink} />
+          <img
+            alt=""
+            src={imgLink}
+            style={{ height: "250px", width: "300px" }}
+          />
         </figure>
         <div className={classes["l-post-meta"]}>
           <h4 class="font-weight-bold">
@@ -36,10 +40,10 @@ const HomestayInSearch = (props) => {
           </div>
           <div className="row">
             <p className="col-6" style={{ color: "#212529" }}>
-              Rate: abc
+              Rate: 5
             </p>
             <p className="col-6" style={{ color: "#212529" }}>
-              Number of guests: abc
+              Number of booking: 10
             </p>
           </div>
 

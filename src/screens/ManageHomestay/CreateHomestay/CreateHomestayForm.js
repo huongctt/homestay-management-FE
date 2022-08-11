@@ -8,6 +8,7 @@ import { createHomestay } from "../../../services/homestayManagementService";
 import { multipleFilesUpload } from "../../../constant/request";
 import MapInForm from "../../../components/Map/MapInForm";
 import defaultGeo from "../../../constant/geolist";
+import { useNavigate } from "react-router-dom";
 const HomestayForm = () => {
   const [files, setFiles] = useState(null);
   const [cityInput, setCityInput] = useState("Ha Noi");
@@ -20,6 +21,7 @@ const HomestayForm = () => {
   const peopleInput = useRef();
   const poolInput = useRef();
   const descriptionInput = useRef();
+  const navigate = useNavigate();
 
   const handleCreate = async (event) => {
     event.preventDefault();
@@ -52,6 +54,9 @@ const HomestayForm = () => {
     // }
     if (responseUpload?.status === 201) {
       toast.success("Create homestay successfully!");
+      setTimeout(() => {
+        navigate(`/homestays/${response.data._id}`);
+      }, 1500);
     }
   };
 
@@ -64,7 +69,6 @@ const HomestayForm = () => {
     setLongitude(longitude);
     setLatitude(latitude);
   };
-  console.log({ longitude });
 
   return (
     <>

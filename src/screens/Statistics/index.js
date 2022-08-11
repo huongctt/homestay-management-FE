@@ -13,6 +13,7 @@ import { Bar } from "react-chartjs-2";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getStatisticsByHomestay } from "../../services/statistics";
+import { Link } from "react-router-dom";
 import { Pie } from "react-chartjs-2";
 ChartJS.register(
   CategoryScale,
@@ -138,6 +139,7 @@ const Statistics = () => {
   const [quarterList, setQuarterList] = useState(dataQuarter);
   const [quarterListPie, setQuarterListPie] = useState(dataQuarterPie);
   const [loading, setLoading] = useState(false);
+  const [total, setTotal] = useState(0);
 
   const { id } = useParams();
 
@@ -159,6 +161,8 @@ const Statistics = () => {
 
       if (response.status === 200) {
         setHomeStay(response.data.homestay);
+        setTotal(response.data.total);
+        //set column
         setList({
           labels,
           datasets: [
@@ -179,6 +183,7 @@ const Statistics = () => {
             },
           ],
         });
+        //set pie
         const datasetsPie = {
           ...dataPie.datasets[0],
           data: response.data.list,
@@ -204,9 +209,11 @@ const Statistics = () => {
     <>
       <ToastContainer />
       <div className="container">
-        <h1 className="text-center" style={{ margin: "20px" }}>
-          {homestay?.name}
-        </h1>
+        <Link to={"/homestays/" + homestay?._id}>
+          <h1 className="text-center" style={{ margin: "20px" }}>
+            {homestay?.name}
+          </h1>
+        </Link>
         <div
           className="row"
           style={{ marginLeft: "38%", marginTop: "15px", marginBottom: "15px" }}
@@ -259,6 +266,13 @@ const Statistics = () => {
             </p>
           </div>
         )}
+
+        <h4
+          className="text-center"
+          style={{ marginTop: "60px", marginBottom: "60px" }}
+        >
+          Total: {total}
+        </h4>
       </div>
     </>
   );

@@ -4,9 +4,12 @@ import DatePicker from "react-date-picker";
 import { useEffect, useState } from "react";
 import { getListHomestay } from "../../services/homestayManagementService";
 import { getCookie } from "../../constant/request";
-import { createDiscount, getListDiscount } from "../../services/discount";
+import {
+  createDiscount,
+  deactivateDiscount,
+  getListDiscount,
+} from "../../services/discount";
 import { ToastContainer, toast } from "react-toastify";
-import { set } from "date-fns";
 import DiscountCard from "./DiscountCard";
 const Discount = () => {
   const userid = getCookie("userid");
@@ -69,7 +72,24 @@ const Discount = () => {
     if (response.status >= 400) {
       toast.error("Cannot create discount!");
     } else {
+      setActiveDiscounts((prev) => [...prev, response.data.discount]);
+      toast.success("Create discount successfully!");
       setShowModal(false);
+    }
+  };
+
+  const handleDeactivate = async (id) => {
+    console.log({ id });
+    const response = await deactivateDiscount(id);
+    if (response.status >= 400) {
+      toast.error("Cannot create discount!");
+    } else {
+      toast.success("Deactivate successfully!");
+      const discount = activeDisounts.filter((discount) => discount._id === id);
+      setActiveDiscounts((prev) =>
+        prev.filter((discount) => discount._id !== id)
+      );
+      setInactiveDiscounts((prev) => [...prev, ...discount]);
     }
   };
   return (
@@ -95,12 +115,16 @@ const Discount = () => {
         <div className="row">
           {activeDisounts?.map((discount) => (
             <DiscountCard
+              key={discount._id}
+              id={discount._id}
               quantity={discount.quantity}
               used={discount.used}
               checkin={discount.checkin}
               checkout={discount.checkout}
               percentage={discount.percentage}
               homestays={discount.homestays}
+              active={true}
+              onDeactivate={handleDeactivate}
             />
           ))}
         </div>
@@ -108,12 +132,15 @@ const Discount = () => {
         <div className="row">
           {inactiveDisounts?.map((discount) => (
             <DiscountCard
+              key={discount._id}
+              id={discount._id}
               quantity={discount.quantity}
               used={discount.used}
               checkin={discount.checkin}
               checkout={discount.checkout}
               percentage={discount.percentage}
               homestays={discount.homestays}
+              active={false}
             />
           ))}
         </div>
@@ -177,7 +204,7 @@ const Discount = () => {
             <div className="form-group">
               <div className="row" style={{ margin: "5px" }}>
                 <div style={{ width: "50%" }}>
-                  <label for="number">Checkin: </label>
+                  <label for="number">Start: </label>
                   <DatePicker
                     className="form-control"
                     placeholder="Arrive Date"
@@ -186,7 +213,7 @@ const Discount = () => {
                   />
                 </div>
                 <div style={{ width: "50%" }}>
-                  <label for="number">Checkout: </label>
+                  <label for="number">End: </label>
                   <DatePicker
                     className="form-control"
                     placeholder="Arrive Date"

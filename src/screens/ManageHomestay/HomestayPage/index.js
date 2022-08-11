@@ -1,8 +1,11 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
-import { Link } from "react-router-dom";
-import { toast } from "react-toastify";
-import { getHomestay } from "../../../services/homestayManagementService";
+import { Link, useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
+import {
+  getHomestay,
+  deleteHomestay,
+} from "../../../services/homestayManagementService.js";
 import {
   createService,
   getServicesByHomestay,
@@ -41,6 +44,8 @@ const HomestayPage = (props) => {
   const serviceName = useRef();
   const servicePrice = useRef();
   const serviceDescription = useRef();
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function getData() {
@@ -112,6 +117,20 @@ const HomestayPage = (props) => {
     setServices((prev) => [...prev, data]);
     setShowModal(false);
   };
+
+  const deleteHandler = async (e) => {
+    e.preventDefault();
+    const response = await deleteHomestay(id);
+    if (response.status === 200) {
+      toast.success("Delete successfully");
+      setTimeout(() => {
+        navigate(`/homestays`);
+      }, 1500);
+    } else {
+      toast.error("Unable to delete");
+    }
+  };
+
   const chatLink = `/chats/${owner?._id}`;
 
   //loading
@@ -132,9 +151,13 @@ const HomestayPage = (props) => {
   }
   return (
     <>
-      <h3 className="text-center mt-6" style={{ marginTop: "20px" }}>
-        {homestay.name}
-      </h3>
+      <ToastContainer />
+      <h1 className="text-center" style={{ margin: "20px" }}>
+        {homestay?.name}
+      </h1>
+      <h4 className="text-center" style={{ margin: "20px" }}>
+        {homestay?.address} {" - "} {homestay?.city}
+      </h4>
       <section id="listing" class="py-4">
         <div className="container">
           <div className="row">
@@ -200,20 +223,31 @@ const HomestayPage = (props) => {
               </div>
 
               <div className="row mb-5">
-                <h5>Services:</h5>
-                {serviceList}
+                {serviceList?.length !== 0 && (
+                  <>
+                    <h5>Services:</h5>
+                    {serviceList}
+                  </>
+                )}
               </div>
               <div className="row mb-5">
-                <h5>Review:</h5>
-                {reviews?.map((review) => {
-                  return (
-                    <ReviewCard
-                      username={review.user.name}
-                      rate={review.rate}
-                      comment={review.comment}
-                    />
-                  );
-                })}
+                {reviews?.length !== 0 && (
+                  <>
+                    <h5>Reviews:</h5>
+                    {reviews?.map((review) => {
+                      return (
+                        <ReviewCard
+                          key={review._id}
+                          id={review._id}
+                          username={review.user.name}
+                          rate={review.rate}
+                          comment={review.comment}
+                          image={review.image || null}
+                        />
+                      );
+                    })}
+                  </>
+                )}
               </div>
             </div>
             <div className="col-md-3">
@@ -252,6 +286,13 @@ const HomestayPage = (props) => {
                   >
                     Edit homestay
                   </Link>
+                  <button
+                    className="btn-primary btn-block"
+                    style={{ borderRadius: "10px", padding: "4px" }}
+                    onClick={deleteHandler}
+                  >
+                    Delete Homestay
+                  </button>
                   <Link
                     to={bookingListLink}
                     className="btn-primary btn-block text-center"

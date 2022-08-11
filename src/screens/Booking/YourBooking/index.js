@@ -7,6 +7,8 @@ import Modal from "../../../layout/components/Modal";
 import { Button, Rating, Typography } from "@mui/material";
 import { review } from "../../../services/review";
 import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
+import { multipleFilesUpload } from "../../../constant/request";
 
 const YourBooking = () => {
   const [bookings, setBookings] = useState([]);
@@ -14,7 +16,9 @@ const YourBooking = () => {
   const [showModal, setShowModal] = useState(false);
   const [bookingIdToReview, setBookingIdToReview] = useState("");
   const [rate, setRate] = useState(5);
+  const [file, setFile] = useState(null);
   const comment = useRef();
+  console.log({ file });
   useEffect(() => {
     setLoading(true);
     async function getData() {
@@ -44,6 +48,17 @@ const YourBooking = () => {
       toast.error("Cannot review now");
     }
     if (response.status === 201) {
+      if (file) {
+        const formData = new FormData();
+        formData.append("files", file);
+        const url =
+          process.env.REACT_APP_BACK_END +
+          "/reviews/" +
+          response.data.review._id +
+          "/image";
+        console.log(file);
+        const responseUpload = await multipleFilesUpload(url, formData);
+      }
       setTimeout(() => {
         window.location.reload();
       }, 1500);
@@ -59,7 +74,9 @@ const YourBooking = () => {
 
   return (
     <>
-      <h1 className="text-center">Your Booking</h1>
+      <h1 className="text-center" style={{ margin: "25px" }}>
+        Your Booking
+      </h1>
       <div className="container">
         <Table stripped bordered hover size="sm">
           <thead className="thead-dark text-center">
@@ -69,7 +86,9 @@ const YourBooking = () => {
               <th scope="col">People</th>
               <th scope="col">Checkin</th>
               <th scope="col">Checkout</th>
+              <th scope="col">Discount</th>
               <th scope="col">Money</th>
+              <th scope="col">Deposit</th>
               <th scope="col">Status</th>
               <th scope="col">More</th>
             </tr>
@@ -79,7 +98,9 @@ const YourBooking = () => {
               return (
                 <tr key={booking._id}>
                   <td style={{ paddingTop: "10px" }} className="text-center">
-                    {booking.homestay?.name}
+                    <Link to={`/homestays/${booking.homestay._id}`}>
+                      {booking.homestay?.name}
+                    </Link>
                   </td>
                   <td style={{ paddingTop: "10px" }} className="text-center">
                     {booking.phone}
@@ -94,7 +115,13 @@ const YourBooking = () => {
                     {format(new Date(booking.checkout), "dd/MM/yyyy")}
                   </td>
                   <td style={{ paddingTop: "10px" }} className="text-center">
+                    {booking.discountMoney}
+                  </td>
+                  <td style={{ paddingTop: "10px" }} className="text-center">
                     {booking.money}
+                  </td>
+                  <td style={{ paddingTop: "10px" }} className="text-center">
+                    {booking.deposit}
                   </td>
                   <td style={{ paddingTop: "10px" }} className="text-center">
                     {booking.status}
@@ -152,6 +179,11 @@ const YourBooking = () => {
                 required
               />
             </div>
+            <input
+              name="image"
+              type="file"
+              onChange={(e) => setFile(e.target.files[0])}
+            />
             <div className={classes.actions}>
               <button className={classes["button--alt"]}>Review</button>
             </div>
