@@ -9,6 +9,7 @@ import { review } from "../../../services/review";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import { multipleFilesUpload } from "../../../constant/request";
+import NavBottom from "../../../layout/components/NavBottom";
 
 const YourBooking = () => {
   const [bookings, setBookings] = useState([]);
@@ -152,6 +153,7 @@ const YourBooking = () => {
           </tbody>
         </Table>
       </div>
+      <NavBottom />
       {showModal && (
         <Modal onClose={hideModalHandler}>
           <form onSubmit={reviewHandler}>

@@ -21,6 +21,7 @@ import Discount from "./screens/Discount";
 import Notification from "./screens/Notification";
 import ChatPage from "./screens/Chat/ChatPage";
 import Chat from "./screens/Chat";
+import NavBottom from "./layout/components/NavBottom";
 const queryClient = new QueryClient();
 function App() {
   return (

@@ -99,6 +99,8 @@ const BookingForm = () => {
   }, [checkin, checkout]);
 
   useEffect(() => {
+    console.log({ discount });
+    console.log({ money });
     if (discount) {
       const dayDiscount = numberIncludedDate(
         formatDate(checkin),
@@ -117,6 +119,10 @@ const BookingForm = () => {
     }
   }, [discount]);
 
+  useEffect(() => {
+    setDeposit((money - discountMoney) * 0.8);
+  }, [money, discountMoney]);
+
   const handleBooking = async (e) => {
     e.preventDefault();
     const data = {
@@ -131,6 +137,11 @@ const BookingForm = () => {
       discountMoney: discountMoney,
       discount: discount?._id,
     };
+
+    if (data.checkin >= data.checkout) {
+      toast.error("Checkin date must be less than checkout date");
+      return;
+    }
 
     const response = await book(homestayId, data);
     if (response.status >= 400) {
@@ -187,6 +198,7 @@ const BookingForm = () => {
                           color: "black",
                         }}
                         ref={email}
+                        required
                       />
                     </div>
                     <div class="booking-filed">
@@ -201,6 +213,7 @@ const BookingForm = () => {
                           color: "black",
                         }}
                         ref={phone}
+                        required
                       />
                     </div>
                   </div>
@@ -217,6 +230,7 @@ const BookingForm = () => {
                           color: "black",
                         }}
                         ref={people}
+                        required
                       />
                     </div>
                     <div class="booking-filed">

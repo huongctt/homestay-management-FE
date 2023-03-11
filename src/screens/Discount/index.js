@@ -11,6 +11,7 @@ import {
 } from "../../services/discount";
 import { ToastContainer, toast } from "react-toastify";
 import DiscountCard from "./DiscountCard";
+import NavBottom from "../../layout/components/NavBottom";
 const Discount = () => {
   const userid = getCookie("userid");
   const [showModal, setShowModal] = useState(false);
@@ -48,6 +49,7 @@ const Discount = () => {
   };
   const hideModalHandler = () => {
     setShowModal(false);
+    setHomestaysApply([]);
   };
 
   const handleOnChange = (id) => {
@@ -68,6 +70,10 @@ const Discount = () => {
       checkout: formatDate(checkout),
       homestays: homestaysApply,
     };
+    if (data.checkin >= data.checkout) {
+      toast.error("Checkin date must be less than checkout date");
+      return;
+    }
     const response = await createDiscount(data);
     if (response.status >= 400) {
       toast.error("Cannot create discount!");

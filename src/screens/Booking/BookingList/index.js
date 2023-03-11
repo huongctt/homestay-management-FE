@@ -5,6 +5,7 @@ import { toast, ToastContainer } from "react-toastify";
 import { getBookingListByHomestay } from "../../../services/booking";
 import { format } from "date-fns";
 import { Link } from "react-router-dom";
+import NavBottom from "../../../layout/components/NavBottom";
 
 const BookingList = () => {
   const [tab, setTab] = useState("requested");
@@ -45,7 +46,7 @@ const BookingList = () => {
       query = query + "&&username=" + username.current.value;
     }
     if (filter.current.value) {
-      query = query + "&&filter=" + filter.current.value;
+      query = query + "&&time=" + filter.current.value;
     }
     const response = await getBookingListByHomestay(query);
 
@@ -252,6 +253,7 @@ const BookingList = () => {
           </tbody>
         </Table>
       </div>
+      <NavBottom />
     </>
   );
 };

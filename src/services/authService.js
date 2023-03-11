@@ -13,6 +13,9 @@ export async function login(params) {
 export async function signup(data) {
   const url = process.env.REACT_APP_BACK_END + "/users/register";
   const response = await postAsync(url, data);
+  if (response.status === 400) {
+    return response;
+  }
   return response?.data || [];
 }
 export async function getUserInfo() {

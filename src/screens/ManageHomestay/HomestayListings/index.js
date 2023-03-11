@@ -7,10 +7,12 @@ const HomestayListings = () => {
   const userid = getCookie("userid");
   const [homestays, setHomestays] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [bookings, setBookings] = useState([]);
   useEffect(() => {
     async function getData() {
       const response = await getListHomestay(userid);
       setHomestays(response.data.homestays);
+      setBookings(response.data.bookings);
       setLoading(false);
     }
     getData();
@@ -18,6 +20,10 @@ const HomestayListings = () => {
 
   var list = [];
   for (var i = 0; i < homestays.length; i++) {
+    let newBooking = false;
+    if (bookings.some((book) => book === homestays[i]._id)) {
+      newBooking = true;
+    }
     list.push(
       <HomestayInList
         key={homestays[i]._id}
@@ -29,6 +35,7 @@ const HomestayListings = () => {
         pool={homestays[i].pool}
         bookingNumber={homestays[i].bookingNumber}
         rate={homestays[i].rate}
+        newBooking={newBooking}
       />
     );
   }

@@ -11,6 +11,7 @@ import { toast, ToastContainer } from "react-toastify";
 import classes from "../../ManageHomestay/HomestayPage/style.module.css";
 import Modal from "../../../layout/components/Modal";
 import { Link } from "react-router-dom";
+import format from "date-fns/format";
 
 const EditBooking = () => {
   const { id } = useParams();
@@ -26,6 +27,7 @@ const EditBooking = () => {
   const [deposit, setDeposit] = useState(0);
   const note = useRef();
   const status = useRef();
+  const [statusR, setStatusR] = useState(null);
   const [checkin, setCheckin] = useState(new Date());
   const [checkout, setCheckout] = useState(new Date());
   const [total, setTotal] = useState(0);
@@ -65,6 +67,7 @@ const EditBooking = () => {
         setCheckin(new Date(booking.checkin));
         setCheckout(new Date(booking.checkout));
         setTotal(booking.money);
+        setStatusR(booking.status);
       }
     }
     getData();
@@ -164,6 +167,7 @@ const EditBooking = () => {
   const hideModalHandler = () => {
     setShowModal(false);
   };
+  console.log({ statusR });
   return (
     <>
       <ToastContainer />
@@ -259,22 +263,102 @@ const EditBooking = () => {
                         </select>
                       </div>
                       <div class="select-book room  mb-15 fix">
-                        <select
-                          name="status"
-                          style={{
-                            width: "100%",
-                            marginTop: "20px",
-                            padding: "10px",
-                            borderRadius: "10px",
-                            color: "black",
-                          }}
-                          ref={status}
-                        >
-                          <option value="requested">Status: Requested</option>
-                          <option value="accepted">Status: Accepted</option>
-                          <option value="stayed">Status: Stayed</option>
-                          <option value="declined">Status: Declined</option>
-                        </select>
+                        {statusR === "requested" && (
+                          <select
+                            name="status"
+                            style={{
+                              width: "100%",
+                              marginTop: "20px",
+                              padding: "10px",
+                              borderRadius: "10px",
+                              color: "black",
+                            }}
+                            ref={status}
+                          >
+                            <option value="requested">Status: Requested</option>
+                            <option value="accepted">Status: Accepted</option>
+                            <option value="declined">Status: Declined</option>
+                          </select>
+                        )}
+                        {statusR === "accepted" && (
+                          <select
+                            name="status"
+                            style={{
+                              width: "100%",
+                              marginTop: "20px",
+                              padding: "10px",
+                              borderRadius: "10px",
+                              color: "black",
+                            }}
+                            ref={status}
+                          >
+                            <option value="accepted">Status: Accepted</option>
+                            <option value="stayed">Status: Stayed</option>
+                          </select>
+                        )}
+                        {statusR === "stayed" && (
+                          <select
+                            name="status"
+                            style={{
+                              width: "100%",
+                              marginTop: "20px",
+                              padding: "10px",
+                              borderRadius: "10px",
+                              color: "black",
+                            }}
+                            ref={status}
+                          >
+                            <option value="stayed">Status: Stayed</option>
+                          </select>
+                        )}
+                        {statusR === "declined" && (
+                          <select
+                            name="status"
+                            style={{
+                              width: "100%",
+                              marginTop: "20px",
+                              padding: "10px",
+                              borderRadius: "10px",
+                              color: "black",
+                            }}
+                            ref={status}
+                          >
+                            <option value="declined">Status: Declined</option>
+                          </select>
+                        )}
+                        {statusR === "reviewed" && (
+                          <select
+                            name="status"
+                            style={{
+                              width: "100%",
+                              marginTop: "20px",
+                              padding: "10px",
+                              borderRadius: "10px",
+                              color: "black",
+                            }}
+                            ref={status}
+                          >
+                            <option value="reviewed">Status: reviewed</option>
+                          </select>
+                        )}
+                        {statusR == null && (
+                          <select
+                            name="status"
+                            style={{
+                              width: "100%",
+                              marginTop: "20px",
+                              padding: "10px",
+                              borderRadius: "10px",
+                              color: "black",
+                            }}
+                            ref={status}
+                          >
+                            <option value="requested">Status: Requested</option>
+                            <option value="accepted">Status: Accepted</option>
+                            <option value="stayed">Status: Stayed</option>
+                            <option value="declined">Status: Declined</option>
+                          </select>
+                        )}
                       </div>
                       <div class="select-book room  mb-15 fix">
                         <select
@@ -339,6 +423,35 @@ const EditBooking = () => {
                           ref={note}
                         ></textarea>
                       </div>
+
+                      {booking?.discount && (
+                        <div
+                          class="booking-comment fix"
+                          style={{ marginTop: "15px" }}
+                        >
+                          <div
+                            className="card"
+                            style={{
+                              width: "100%",
+                            }}
+                          >
+                            <p className="text-center">
+                              Discount: {booking.discount.percentage} %
+                            </p>
+                            <p className="text-center">
+                              {format(
+                                new Date(booking.discount.checkin),
+                                "dd/MM/yyyy"
+                              )}{" "}
+                              {" => "}
+                              {format(
+                                new Date(booking.discount.checkout),
+                                "dd/MM/yyyy"
+                              )}
+                            </p>
+                          </div>
+                        </div>
+                      )}
                       <h5 style={{ marginTop: "6px" }}>
                         Services: {servicesBooking.length || 0}
                       </h5>
@@ -400,7 +513,7 @@ const EditBooking = () => {
                             color: "white",
                           }}
                         >
-                          Edit Booking
+                          Update Booking
                         </button>
                       </div>
                     </form>
@@ -412,13 +525,15 @@ const EditBooking = () => {
               <Link to={listBokkingLink} style={{ margin: "20px" }}>
                 Back to booking list
               </Link>
-              <button
-                className="btn-primary btn-block"
-                style={{ borderRadius: "10px", padding: "4px" }}
-                onClick={showModalHandler}
-              >
-                Add service
-              </button>
+              {statusR !== "requested" && statusR != null && (
+                <button
+                  className="btn-primary btn-block"
+                  style={{ borderRadius: "10px", padding: "4px" }}
+                  onClick={showModalHandler}
+                >
+                  Add service
+                </button>
+              )}
             </div>
             {showModal && (
               <Modal onClose={hideModalHandler}>

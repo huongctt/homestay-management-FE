@@ -1,8 +1,10 @@
 import DatePicker from "react-date-picker";
 import { useRef, useState, useCallback, useEffect } from "react";
 import { search } from "../../services/booking";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import HomestayInSearch from "../../components/HomestayInSearch/homestayInSearch";
+import { formatDate } from "../../constant/custom";
+import NavBottom from "../../layout/components/NavBottom";
 
 const Home = () => {
   const [checkin, setCheckin] = useState(new Date());
@@ -14,11 +16,17 @@ const Home = () => {
   const searchHandler = async (e) => {
     e.preventDefault();
     const data = {
-      checkin: checkin.toISOString(),
-      checkout: checkout.toISOString(),
+      checkin: formatDate(checkin),
+      checkout: formatDate(checkout),
       city: city.current.value,
       price: price.current.value,
     };
+
+    if (data.checkin >= data.checkout) {
+      toast.error("Checkin date must be less than checkout date");
+      return;
+    }
+
     const response = await search(data);
     if (response.status >= 400) {
       toast.error("Some thing went wrong, cannot find homestays!");
@@ -42,9 +50,9 @@ const Home = () => {
       />
     );
   });
-  console.log({ homestays });
   return (
     <>
+      <ToastContainer />
       <section id="showcase">
         <div className="container" style={{ marginBottom: "80px !important" }}>
           <div className="home-search p-5 text-center">
@@ -77,7 +85,6 @@ const Home = () => {
                         id="price"
                         ref={price}
                       >
-                        <option value="500000">500,000</option>
                         <option value="1000000">1,000,000</option>
                         <option value="2000000">2,000,000</option>
                         <option value="3000000">3,000,000</option>
@@ -131,6 +138,7 @@ const Home = () => {
           {list}
         </div>
       </section>
+      <NavBottom />
     </>
   );
 };

@@ -26,6 +26,7 @@ export const LoginContextProvider = ({ children }) => {
     let params = JSON.parse(tmp);
     if (username && password && phone && email && role) {
       const response = await signup(params);
+      console.log({ response });
       if (response?.token) {
         toastSuccess("Success Notification !");
         await setCookie("currentuser", response?.token);
@@ -47,6 +48,7 @@ export const LoginContextProvider = ({ children }) => {
     let params = JSON.parse(tmp);
     if (username && password) {
       const response = await login(params);
+      console.log({ response });
       if (response?.token) {
         toastSuccess("Success Notification !");
         await setCookie("currentuser", response?.token);

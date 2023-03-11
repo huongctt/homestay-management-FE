@@ -2,19 +2,24 @@ import { Link } from "react-router-dom";
 
 const HomestayInList = (props) => {
   var link = `/homestays/${props.id}`;
+  var bookinglink = `/bookings/${props.id}`;
   const imgLink = `http://localhost:3333/homestays/${props.id}/images?index=0`;
   return (
     <>
       <div className="col-md-6 col-lg-4 mb-4">
         <div className="card listing-preview">
           <img alt="" src={imgLink} />
-          <div className="card-img-overlay">
-            <h2>
-              <span className="badge badge-secondary text-white">
-                {props.price}
-              </span>
-            </h2>
-          </div>
+          {props.newBooking && (
+            <>
+              <div className="card-img-overlay">
+                <h2>
+                  <span className="badge badge-secondary text-white">
+                    New Booking!!!
+                  </span>
+                </h2>
+              </div>
+            </>
+          )}
           <div className="card-body">
             <div className="listing-heading text-center">
               <Link to={link}>
@@ -57,8 +62,8 @@ const HomestayInList = (props) => {
                   <i class="fas fa-clock"></i> 2 days ago
                 </div>
               </div> */}
-            <Link to={link} className="btn btn-primary btn-block">
-              More Info
+            <Link to={bookinglink} className="btn btn-primary btn-block">
+              Check bookings
             </Link>
           </div>
         </div>

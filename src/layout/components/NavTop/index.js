@@ -4,8 +4,10 @@ import useAuthen from "../../../hooks/useAuthen";
 import { logoutUser, getUserInfo } from "../../../services/authService";
 import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
+import { checkNoti } from "../../../services/notification";
 
 const NavTop = () => {
+  const [notSeenNoti, setNotSeenNoti] = useState(false);
   const {
     isAuthenticated,
     setIsAuthenticated,
@@ -17,6 +19,17 @@ const NavTop = () => {
     "userid",
   ]);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    async function getData() {
+      const res = await checkNoti();
+      if (res.status === 200) {
+        setNotSeenNoti(res.data.notSeen);
+      }
+    }
+    getData();
+  }, []);
+  console.log({ notSeenNoti });
 
   const handleLogout = async ({ id, link }) => {
     await logoutUser();
@@ -59,11 +72,23 @@ const NavTop = () => {
                   Your Bookings
                 </NavLink>
               </li>
-              <li>
-                <NavLink to="/notifications" className="nav-link ">
-                  Notifications
-                </NavLink>
-              </li>
+              {notSeenNoti ? (
+                <li
+                  onClick={(e) => {
+                    setNotSeenNoti(false);
+                  }}
+                >
+                  <NavLink to="/notifications" className="nav-link">
+                    Notifications !!!
+                  </NavLink>
+                </li>
+              ) : (
+                <li>
+                  <NavLink to="/notifications" className="nav-link ">
+                    Notifications
+                  </NavLink>
+                </li>
+              )}
               <li>
                 <NavLink to="/chats" className="nav-link ">
                   Chats

@@ -1,7 +1,7 @@
 import classes from "./style.module.css";
 import { Link } from "react-router-dom";
 const HomestayInSearch = (props) => {
-  const link = `homestays/${props.id}`;
+  const link = `/homestays/${props.id}`;
   const imgLink = `http://localhost:3333/homestays/${props.id}/images?index=0`;
   return (
     <>
